@@ -1,6 +1,5 @@
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
 # Copy root requirements (build context is the repo root)
@@ -12,17 +11,15 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_PROGRESS_BAR=off \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
+
 RUN python -m pip install --no-cache-dir --disable-pip-version-check -r requirements.txt --progress-bar off
+
+# Copy the orchestrator app
+COPY app.py .
 
 # Create non-root user
 RUN useradd -m -u 1000 app && chown -R app:app /app
 USER app
-
-# Copy application code from the subdirectory
-COPY --chown=app:app agents/customer-support-agent/ .
-
-# Create necessary directories
-RUN mkdir -p data logs
 
 # Set environment variables to reduce resource usage
 ENV STREAMLIT_SERVER_MAX_UPLOAD_SIZE=200 \
@@ -34,11 +31,7 @@ ENV STREAMLIT_SERVER_MAX_UPLOAD_SIZE=200 \
     STREAMLIT_SERVER_FILE_WATCHER_TYPE=none
 
 # Expose port
-EXPOSE 8502
+EXPOSE 8500
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8502/_stcore/health || exit 1
-
-# Run the application
-CMD ["streamlit", "run", "src/ui/app.py", "--server.port=8502", "--server.address=0.0.0.0", "--server.headless=true", "--server.fileWatcherType=none"]
+# Run the orchestrator application
+CMD ["streamlit", "run", "app.py", "--server.port=8500", "--server.address=0.0.0.0", "--server.headless=true", "--server.fileWatcherType=none"]
