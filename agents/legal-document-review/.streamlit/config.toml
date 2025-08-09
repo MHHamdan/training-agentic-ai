@@ -1,0 +1,32 @@
+[theme]
+# Primary color for interactive elements
+primaryColor = "#1e3a8a"
+
+# Background color for the main content area
+backgroundColor = "#ffffff"
+
+# Background color for sidebar
+secondaryBackgroundColor = "#f0f4f8"
+
+# Text color
+textColor = "#262730"
+
+# Font family
+font = "sans serif"
+
+[server]
+# Max file upload size (in MB)
+maxUploadSize = 25
+
+# Enable CORS protection
+enableCORS = true
+
+# Enable XSRF protection
+enableXsrfProtection = true
+
+[browser]
+# Tab title
+gatherUsageStats = false
+
+# Show error details in the browser
+showErrorDetails = true
