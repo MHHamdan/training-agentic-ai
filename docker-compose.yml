@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  legal-document-review:
+    build:
+      context: ./agents/legal-document-review
+      dockerfile: Dockerfile
+    image: training-agentic-ai/legal-document-review:latest
+    env_file:
+      - ./.env
+    ports:
+      - "8501:8501"
+    command: ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+  customer-support-agent:
+    build:
+      context: ./agents/customer-support-agent
+      dockerfile: Dockerfile
+    image: training-agentic-ai/customer-support-agent:latest
+    env_file:
+      - ./.env
+    ports:
+      - "8502:8502"
+    environment:
+      - PYTHONPATH=/app/src
+    command: ["streamlit", "run", "src/ui/app.py", "--server.port=8502", "--server.address=0.0.0.0"]
+
+networks:
+  default:
+    driver: bridge
+
