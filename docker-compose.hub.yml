@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  # Main orchestrator - landing page
+  orchestrator:
+    image: 440930/training-agentic-ai:orchestrator
+    env_file:
+      - ./.env
+    ports:
+      - "8500:8500"
+    environment:
+      - STREAMLIT_SERVER_PORT=8500
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    depends_on:
+      - customer-support-agent
+      - legal-document-review
+    networks:
+      - agent-network
+
+  # Legal Document Review Agent
+  legal-document-review:
+    image: 440930/training-agentic-ai:legal-document-review
+    env_file:
+      - ./.env
+    ports:
+      - "8501:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    networks:
+      - agent-network
+
+  # Customer Support Agent
+  customer-support-agent:
+    image: 440930/training-agentic-ai:customer-support-agent
+    env_file:
+      - ./.env
+    ports:
+      - "8502:8502"
+    environment:
+      - PYTHONPATH=/app/src
+      - STREAMLIT_SERVER_PORT=8502
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    networks:
+      - agent-network
+
+networks:
+  agent-network:
+    driver: bridge

@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # LangChain imports
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.schema import Document
@@ -174,7 +174,7 @@ class LegalDocumentProcessor:
                 return_source_documents=True
             )
             
-            result = qa_chain({"query": question})
+            result = qa_chain.invoke({"query": question})
             return result["result"]
             
         except Exception as e:

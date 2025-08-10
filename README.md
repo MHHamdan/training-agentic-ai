@@ -2,7 +2,7 @@
 
 A comprehensive platform for building, managing, and orchestrating AI agents with a unified landing page that serves as the central control center.
 
-## 🎯 Overview
+## Overview
 
 This repository contains a collection of AI agents organized under the `agents/` folder, all managed through a unified orchestrator interface. The platform provides:
 
@@ -11,7 +11,7 @@ This repository contains a collection of AI agents organized under the `agents/`
 - **Shared Environment**: Single `.env` file and Python virtual environment
 - **Docker Integration**: Complete containerization for easy deployment
 
-## 🏗️ Repository Structure
+## Repository Structure
 
 ```
 training-agentic-ai/
@@ -26,7 +26,7 @@ training-agentic-ai/
 └── README.md                       # This file
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Environment Setup
 ```bash
@@ -52,14 +52,26 @@ cp .env.example .env
 ```
 
 ### 3. Start All Services
+
+#### Option A: Docker Compose (Recommended)
 ```bash
 # Build and start all agents with Docker
 docker compose up -d
 
-# Or start individual services
-docker compose up -d orchestrator
-docker compose up -d customer-support-agent
-docker compose up -d legal-document-review
+# Or use pre-built Docker Hub images
+docker compose -f docker-compose.hub.yml up -d
+```
+
+#### Option B: Local Python Environment
+```bash
+# Start orchestrator
+streamlit run app.py --server.port 8500 &
+
+# Start legal document review
+streamlit run agents/legal-document-review/app.py --server.port 8501 &
+
+# Start customer support agent  
+streamlit run agents/customer-support-agent/src/ui/app.py --server.port 8502 &
 ```
 
 ### 4. Access the Platform
@@ -67,7 +79,7 @@ docker compose up -d legal-document-review
 - **Customer Support Agent**: http://localhost:8502
 - **Legal Document Review**: http://localhost:8501
 
-## 🤖 Available Agents
+## Available Agents
 
 ### Customer Support Agent (Port 8502)
 - **Technology**: LangGraph, Streamlit, Google Gemini
@@ -79,7 +91,7 @@ docker compose up -d legal-document-review
 - **Features**: PDF processing, semantic search, question answering
 - **Use Case**: Legal document analysis and review automation
 
-## 🎛️ Orchestrator Features
+## Orchestrator Features
 
 The main orchestrator at `http://localhost:8500` provides:
 
@@ -89,7 +101,7 @@ The main orchestrator at `http://localhost:8500` provides:
 - **Docker Management**: Start/stop commands and logs
 - **Development Info**: Project structure and setup guides
 
-## 🛠️ Development
+## Development
 
 ### Adding New Agents
 1. Create a new directory in `agents/`
@@ -121,14 +133,28 @@ pytest tests/customer-support/
 pytest tests/legal-document/
 ```
 
-## 🐳 Docker Commands
+## Docker Hub Images
 
+The platform is available as pre-built Docker images:
+- `440930/training-agentic-ai:orchestrator` - Main dashboard
+- `440930/training-agentic-ai:legal-document-review` - Legal document processor  
+- `440930/training-agentic-ai:customer-support-agent` - Support chatbot
+
+### Docker Commands
 ```bash
-# Build all services
+# Pull latest images from Docker Hub
+docker pull 440930/training-agentic-ai:orchestrator
+docker pull 440930/training-agentic-ai:legal-document-review
+docker pull 440930/training-agentic-ai:customer-support-agent
+
+# Build all services locally
 docker compose build
 
 # Start all services
 docker compose up -d
+
+# Start with Docker Hub images
+docker compose -f docker-compose.hub.yml up -d
 
 # View logs
 docker compose logs -f
@@ -140,14 +166,14 @@ docker compose down
 docker compose restart customer-support-agent
 ```
 
-## 📊 Monitoring
+## Monitoring
 
 - **Health Checks**: Each agent provides health endpoints
 - **Logs**: Centralized logging through Docker Compose
 - **Metrics**: System metrics available in the orchestrator
 - **Status**: Real-time status monitoring of all agents
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 - `GOOGLE_API_KEY`: Required for Google Gemini AI services
@@ -160,7 +186,7 @@ docker compose restart customer-support-agent
 - **Legal Document Review**: 8501
 - **Customer Support Agent**: 8502
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -168,19 +194,45 @@ docker compose restart customer-support-agent
 4. Update the orchestrator if needed
 5. Submit a pull request
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🆘 Support
+## Latest Updates
+
+### v1.0 - Production Ready (Latest)
+- Fixed LangChain compatibility issues with updated imports and method calls
+- Docker Hub integration with pre-built images for instant deployment
+- Complete production deployment pipeline with automated builds
+- All agents tested and verified working in production environment
+- Comprehensive documentation and setup guides added
+- Resolved dependency conflicts and deprecation warnings
+
+### Key Improvements
+- Updated `langchain.vectorstores` to `langchain_community.vectorstores`
+- Fixed `qa_chain.__call__()` to `qa_chain.invoke()` compatibility
+- Streamlined Docker deployment with hub images
+- Added deployment automation scripts
+
+## Support
 
 For issues and questions:
-1. Check the agent-specific README files in `agents/`
-2. Review the Docker logs: `docker compose logs`
-3. Check the orchestrator status at `http://localhost:8500`
-4. Open an issue on GitHub
+1. Check the **DEPLOYMENT_SUMMARY.md** for latest setup instructions
+2. Review the agent-specific README files in `agents/`
+3. Check Docker logs: `docker compose logs`
+4. Verify orchestrator status at `http://localhost:8500`
+5. Open an issue on GitHub
+
+## Quick Deploy
+```bash
+# Fastest way to get started with pre-built images
+git clone https://github.com/MHHamdan/training-agentic-ai.git
+cd training-agentic-ai
+cp .env.example .env  # Add your GOOGLE_API_KEY
+docker compose -f docker-compose.hub.yml up -d
+# Access at http://localhost:8500
+```
 
 ---
 
-**Built with ❤️ for the AI community**
-
+**Built for the AI development community**
