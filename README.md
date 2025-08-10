@@ -1,29 +1,28 @@
-# Training Agentic AI - Unified Agent Platform
+# Multi-Agent AI Platform
 
-A comprehensive platform for building, managing, and orchestrating AI agents with a unified landing page that serves as the central control center.
+A simple workspace where different AI assistants work together to help with various tasks. No complicated setup - just run and use.
 
-## Overview
+## What You Get
 
-This repository contains a collection of AI agents organized under the `agents/` folder, all managed through a unified orchestrator interface. The platform provides:
+Three helpful AI assistants that each specialize in different areas:
 
-- **Unified Landing Page**: Central orchestrator at `http://localhost:8500`
-- **Agent Management**: Start, stop, monitor, and manage all agents
-- **Shared Environment**: Single `.env` file and Python virtual environment
-- **Docker Integration**: Complete containerization for easy deployment
+- **Dashboard**: Central place to access all assistants at http://localhost:8500
+- **Easy Management**: Start and stop all assistants with one command
+- **Simple Setup**: One configuration file and shared environment
+- **Works Anywhere**: Docker support for easy deployment
 
 ## Repository Structure
 
 ```
-training-agentic-ai/
+multi-agent-platform/
 ├── agents/
-│   ├── customer-support-agent/     # LangGraph-based support system
-│   └── legal-document-review/      # RAG-based document analysis
-├── tests/                          # Test suites for all agents
-├── app.py                          # Main orchestrator (landing page)
-├── docker-compose.yml              # Multi-service orchestration
-├── requirements.txt                # Shared dependencies
-├── .env.example                    # Environment template
-└── README.md                       # This file
+│   ├── customer-support-agent/     # Customer service helper
+│   ├── legal-document-review/      # Document analysis tool
+│   └── Finance-Advaisor-Agent/     # Personal finance assistant
+├── app.py                          # Main dashboard
+├── docker-compose.yml              # Docker setup
+├── requirements.txt                # Python dependencies
+└── .env.example                    # Settings template
 ```
 
 ## Quick Start
@@ -79,17 +78,22 @@ streamlit run agents/customer-support-agent/src/ui/app.py --server.port 8502 &
 - **Customer Support Agent**: http://localhost:8502
 - **Legal Document Review**: http://localhost:8501
 
-## Available Agents
+## Your AI Assistants
 
-### Customer Support Agent (Port 8502)
-- **Technology**: LangGraph, Streamlit, Google Gemini
-- **Features**: Multi-turn conversations, context awareness, escalation handling
-- **Use Case**: AI-powered customer support with human-in-the-loop capabilities
+### Customer Support Assistant (Port 8502)
+- **What it does**: Answers customer questions and knows when to get human help
+- **Good for**: Customer service, support requests, common questions
+- **Try it**: Ask about returns, account issues, or product help
 
-### Legal Document Review (Port 8501)
-- **Technology**: LangChain, FAISS, Google Gemini, PyPDF2
-- **Features**: PDF processing, semantic search, question answering
-- **Use Case**: Legal document analysis and review automation
+### Document Review Assistant (Port 8501)  
+- **What it does**: Reads legal documents and answers questions about them
+- **Good for**: Contract reviews, finding specific terms, document summaries
+- **Try it**: Upload a PDF and ask "What are the key terms?"
+
+### Finance Advisor Assistant (Port 8503)
+- **What it does**: Shows stock prices, tracks spending, gives money advice
+- **Good for**: Personal budgeting, investment research, financial planning  
+- **Try it**: Ask "What's Apple's stock price?" or "Help me budget $3000/month"
 
 ## Orchestrator Features
 
