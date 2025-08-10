@@ -1,7 +1,10 @@
-"""Simplified Unified Landing Page for Training Agentic AI - Agent Orchestrator"""
+"""Dynamic Multi-Agent Platform Dashboard"""
 
 import streamlit as st
 from datetime import datetime
+import os
+import glob
+from pathlib import Path
 
 # Page configuration
 st.set_page_config(
@@ -51,14 +54,64 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Agent configuration
+AGENTS_CONFIG = {
+    "customer-support-agent": {
+        "name": "Customer Support Agent",
+        "icon": "🎧",
+        "port": 8502,
+        "description": "Handles customer questions and can escalate to humans when needed",
+        "features": ["Multi-turn conversations", "Context awareness", "Escalation handling", "User profile management"],
+        "tech_stack": "LangGraph, Streamlit, Google Gemini",
+        "path": "agents/customer-support-agent/src/ui/app.py"
+    },
+    "legal-document-review": {
+        "name": "Legal Document Review",
+        "icon": "⚖️",
+        "port": 8501,
+        "description": "Reads legal documents and answers questions about them",
+        "features": ["PDF document processing", "Semantic search", "Question answering", "Document summarization"],
+        "tech_stack": "LangChain, FAISS, Google Gemini",
+        "path": "agents/legal-document-review/app.py"
+    },
+    "Finance-Advaisor-Agent": {
+        "name": "Finance Advisor Agent",
+        "icon": "💰",
+        "port": 8503,
+        "description": "Provides stock prices, tracks spending, and gives financial advice",
+        "features": ["Real-time stock prices", "Personalized advice", "Expense tracking", "Budget management"],
+        "tech_stack": "LangGraph, Groq LLM, Alpha Vantage",
+        "path": "agents/Finance-Advaisor-Agent/app.py"
+    }
+}
+
+def discover_agents():
+    """Dynamically discover available agents"""
+    agents_dir = Path("agents")
+    available_agents = {}
+    
+    if agents_dir.exists():
+        for agent_folder in agents_dir.iterdir():
+            if agent_folder.is_dir() and agent_folder.name in AGENTS_CONFIG:
+                agent_config = AGENTS_CONFIG[agent_folder.name]
+                # Check if the agent has a main app file
+                app_path = Path(agent_config["path"])
+                if app_path.exists():
+                    available_agents[agent_folder.name] = agent_config
+    
+    return available_agents
+
 def main():
     """Main application entry point"""
+    
+    # Discover available agents
+    available_agents = discover_agents()
     
     # Header
     st.markdown("""
     <div class="main-header">
-        <h1>🤖 Training Agentic AI Platform</h1>
-        <p>Unified Orchestrator for AI Agents</p>
+        <h1>🤖 Multi-Agent AI Platform</h1>
+        <p>Your Personal AI Assistant Workspace</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -69,66 +122,81 @@ def main():
         
         # System Info
         st.subheader("📊 System Status")
-        st.metric("Total Agents", "2")
+        st.metric("Total Agents", len(available_agents))
         st.metric("Platform Status", "🟢 Online")
         st.metric("Last Updated", datetime.now().strftime("%H:%M:%S"))
         
         st.markdown("---")
-        st.subheader("🔧 Development")
-        st.info("All agents are running in Docker containers")
-        st.success("Platform is ready for development!")
-    
-    # Main content
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        <div class="agent-card">
-            <h3>🎧 Customer Support Agent</h3>
-            <p><strong>Port:</strong> 8502</p>
-            <p><strong>Status:</strong> 🟢 Running</p>
-            <p><strong>Features:</strong></p>
-            <ul>
-                <li>Multi-turn conversations</li>
-                <li>Context awareness</li>
-                <li>Escalation handling</li>
-                <li>User profile management</li>
-            </ul>
-            <p><strong>Tech Stack:</strong> LangGraph, Streamlit, Google Gemini</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.subheader("🔧 Available Agents")
+        for agent_id, config in available_agents.items():
+            st.info(f"{config['icon']} {config['name']} - Port {config['port']}")
         
-        if st.button("🚀 Launch Customer Support Agent", key="cs_btn"):
-            st.success("Opening Customer Support Agent at http://localhost:8502")
-            st.markdown("[Click here to open](http://localhost:8502)")
-    
-    with col2:
-        st.markdown("""
-        <div class="agent-card">
-            <h3>⚖️ Legal Document Review</h3>
-            <p><strong>Port:</strong> 8501</p>
-            <p><strong>Status:</strong> 🟢 Running</p>
-            <p><strong>Features:</strong></p>
-            <ul>
-                <li>PDF document processing</li>
-                <li>Semantic search</li>
-                <li>Question answering</li>
-                <li>Document summarization</li>
-            </ul>
-            <p><strong>Tech Stack:</strong> LangChain, FAISS, Google Gemini</p>
-        </div>
-        """, unsafe_allow_html=True)
+        if len(available_agents) == 0:
+            st.warning("No agents detected. Please check the agents/ directory.")
         
-        if st.button("🚀 Launch Legal Document Review", key="ldr_btn"):
-            st.success("Opening Legal Document Review at http://localhost:8501")
-            st.markdown("[Click here to open](http://localhost:8501)")
+        st.markdown("---")
+        st.success(f"Platform ready with {len(available_agents)} agents!")
+    
+    # Main content - Dynamic agent cards
+    if available_agents:
+        # Create dynamic columns based on number of agents
+        num_agents = len(available_agents)
+        if num_agents == 1:
+            cols = [st.container()]
+        elif num_agents == 2:
+            cols = st.columns(2)
+        else:
+            cols = st.columns(3)  # Max 3 columns for better layout
+        
+        agent_list = list(available_agents.items())
+        
+        for i, (agent_id, config) in enumerate(agent_list):
+            col_index = i % len(cols) if num_agents > len(cols) else i
+            
+            with cols[col_index]:
+                # Create feature list HTML
+                features_html = ""
+                for feature in config["features"]:
+                    features_html += f"<li>{feature}</li>"
+                
+                st.markdown(f"""
+                <div class="agent-card">
+                    <h3>{config['icon']} {config['name']}</h3>
+                    <p><strong>Port:</strong> {config['port']}</p>
+                    <p><strong>Status:</strong> 🟢 Running</p>
+                    <p><strong>What it does:</strong> {config['description']}</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        {features_html}
+                    </ul>
+                    <p><strong>Tech Stack:</strong> {config['tech_stack']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                if st.button(f"🚀 Launch {config['name']}", key=f"{agent_id}_btn"):
+                    st.success(f"Opening {config['name']} at http://localhost:{config['port']}")
+                    st.markdown(f"[Click here to open](http://localhost:{config['port']})")
+    else:
+        st.warning("""
+        🔍 **No agents detected!**
+        
+        Please make sure you have agent directories in the `agents/` folder with their respective app files.
+        
+        Expected structure:
+        ```
+        agents/
+        ├── customer-support-agent/src/ui/app.py
+        ├── legal-document-review/app.py
+        └── Finance-Advaisor-Agent/app.py
+        ```
+        """)
     
     # Footer
     st.markdown("---")
-    st.markdown("""
+    st.markdown(f"""
     <div style="text-align: center; color: #666;">
-        <p><strong>Training Agentic AI Platform</strong> | Built with Streamlit & Docker</p>
-        <p>All agents are containerized and ready for development</p>
+        <p><strong>Multi-Agent AI Platform</strong> | {len(available_agents)} Assistants Available</p>
+        <p>Built with Streamlit & Docker | Ready for Development</p>
     </div>
     """, unsafe_allow_html=True)
 

@@ -1,0 +1,10 @@
+# This file maps author names to canonical names and email addresses
+# Used to consolidate contributions from the same person under different names/emails
+
+Mohammed Hamdan <mhhamdan@research.org> Mohammed Hamdan <mh2022ets@gmail.com>
+Mohammed Hamdan <mhhamdan@research.org> MHHamdan <mhhamdan@research.org>
+Mohammed Hamdan <mhhamdan@research.org> MHHamdan <mh2022ets@gmail.com>
+
+# Map any Claude entries to Mohammed Hamdan (the actual author)
+Mohammed Hamdan <mhhamdan@research.org> claude <noreply@anthropic.com>
+Mohammed Hamdan <mhhamdan@research.org> Claude <noreply@anthropic.com>
