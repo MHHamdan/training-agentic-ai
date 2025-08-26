@@ -1,10 +1,10 @@
 # 🤖 Multi-Agent AI Platform
 
-An advanced, production-ready platform orchestrating 12 specialized AI agents for comprehensive business solutions. From customer support to stock analysis, each agent leverages cutting-edge AI to solve real-world problems.
+An advanced, production-ready platform orchestrating **18 specialized AI agents** for comprehensive business solutions. From customer support to stock analysis, each agent leverages cutting-edge AI to solve real-world problems.
 
 ## 🎯 What You Get
 
-**12 Intelligent AI Agents** working together to solve complex business challenges:
+**18 Intelligent AI Agents** working together to solve complex business challenges:
 
 - **🎛️ Centralized Dashboard**: Unified control center at http://localhost:8500
 - **🚀 One-Command Deployment**: Start/stop all agents with single script
@@ -16,19 +16,24 @@ An advanced, production-ready platform orchestrating 12 specialized AI agents fo
 
 ```
 multi-agent-platform/
-├── 🎛️  Main Dashboard (8500)          # Central orchestration hub
-├── ⚖️  Legal Document Review (8501)     # PDF analysis & contract review
-├── 🎧 Customer Support Agent (8502)     # Multi-turn conversation with HITL
-├── 💰 Finance Advisor Agent (8503)      # Personal finance & stock prices
-├── 🔍 Competitive Intel Agent (8504)    # Market analysis & insights
-├── 📊 Insights Explorer Agent (8505)    # Data analysis with embeddings
-├── 🎫 Support Triage Agent (8506)       # Ticket routing & sentiment analysis
-├── 📈 Extended Stock Analysis (8507)    # Advanced multi-agent stock analysis
-├── 🏛️ Multi-Agent Financial (8508)     # LangGraph financial analysis system
-├── ✍️  AI Content Creation (8509)       # Content generation & optimization
-├── 🔬 ARIA Research Intel (8510)        # AutoGen research intelligence
-├── 🏥 MARIA Medical Research (8511)     # Medical research intelligence
-└── 📄 Resume Screening (8512)          # AI-powered resume analysis
+├── 🎛️  Main Dashboard (8500)                    # Central orchestration hub
+├── ⚖️  Legal Document Review (8501)               # PDF analysis & contract review
+├── 🎧 Customer Support Agent (8502)               # Multi-turn conversation with HITL
+├── 💰 Finance Advisor Agent (8503)                # Personal finance & stock prices
+├── 🔍 Competitive Intel Agent (8504)              # Market analysis & insights
+├── 📊 Insights Explorer Agent (8505)              # Data analysis with embeddings
+├── 🎫 Support Triage Agent (8506)                 # Ticket routing & sentiment analysis
+├── 📈 Extended Stock Analysis (8507)              # Advanced multi-agent stock analysis
+├── 🏛️ Multi-Agent Financial (8508)               # LangGraph financial analysis system
+├── ✍️  AI Content Creation (8509)                 # Content generation & optimization
+├── 🔬 ARIA Research Intel (8510)                  # AutoGen research intelligence
+├── 🏥 MARIA Medical Research (8511)               # Medical research intelligence
+├── 📄 Resume Screening (8512)                     # AI-powered resume analysis
+├── 🔍 Code Review Agent (8513)                    # Enterprise code analysis
+├── 📜 Handwriting Document Agent (8514)           # OCR & historical document analysis
+├── 🎯 Customer Support Triage (8515)              # Automated ticket classification
+├── 🤖 Comprehensive AI Assistant (8516)           # All-in-one information hub
+└── 📚 Research Agent (8517)                       # Advanced research workflows
 ```
 
 ## 🚀 Quick Start
@@ -84,7 +89,7 @@ streamlit run agents/legal-document-review/app.py --server.port 8501 &
 
 ### 🎛️ **Main Dashboard** (Port 8500)
 **Central Command Center**
-- **Live Monitoring**: Real-time status of all 7 agents
+- **Live Monitoring**: Real-time status of all 18 agents
 - **Quick Access**: Direct links to all agent interfaces  
 - **System Metrics**: Performance monitoring and health checks
 - **Unified Management**: Start/stop commands and logs
@@ -207,6 +212,114 @@ streamlit run agents/legal-document-review/app.py --server.port 8501 &
 
 **Try it**: Upload a resume PDF and enter job requirements to see multi-model analysis in action!
 
+---
+
+### 🔍 **Code Review Agent** (Port 8513) - **🆕 NEW!**
+**Enterprise-Grade AI Code Analysis**
+- **Multi-Provider Support**: HuggingFace, OpenAI, Google Gemini, Anthropic Claude
+- **Advanced Analysis**: Security, performance, and style analysis
+- **Real-time Processing**: Live code review with instant feedback
+- **Comprehensive Metrics**: Code quality scoring and recommendations
+- **Enterprise Features**: API key management, team collaboration, audit trails
+
+**Try it**: Upload your code and get instant AI-powered analysis across multiple providers!
+
+---
+
+### 📜 **Handwriting Document Agent** (Port 8514) - **🆕 NEW!**
+**AI-Powered Historical Document Analysis**
+- **Advanced OCR**: Microsoft TrOCR models for handwritten and printed text
+- **Multi-format Support**: Images (PNG, JPG, TIFF), PDFs, and text files
+- **Historical Context**: Time period detection and historical significance analysis
+- **Interactive Chat**: RAG-powered conversational interface with your documents
+- **Vector Search**: Semantic search through processed document content
+
+**Try it**: Upload historical documents and chat with them using natural language!
+
+---
+
+### 🎯 **Customer Support Triage** (Port 8515) - **🆕 NEW!**
+**Automated Ticket Classification & Analysis**
+- **AI-Powered Classification**: Automatic categorization of customer intents
+- **Sentiment & Urgency Analysis**: Real-time emotional intelligence and priority scoring
+- **Smart Response Generation**: Draft professional responses with company policy adherence
+- **Semantic Search**: Find similar past tickets and proven solutions
+- **Management Insights**: Generate executive summaries and operational recommendations
+
+**Try it**: Upload support tickets and get instant AI-powered triage and analysis!
+
+---
+
+### 🤖 **Comprehensive AI Assistant** (Port 8516) - **🆕 NEW!**
+**All-in-One Information Hub with Visual Workflow Observability**
+- **Multi-API Integration**: Connects to 15+ external APIs simultaneously
+- **Real-time Data Fusion**: Intelligent aggregation from multiple sources
+- **Visual Observability**: Live workflow visualization with LangSmith integration
+- **Service Categories**: News, weather, sports, finance, location, shopping, health, transportation
+- **Intelligent Caching**: Optimized performance with smart caching
+
+**Try it**: Ask "What's the weather like and are there any good restaurants nearby?"
+
+---
+
+### 📚 **Research Agent** (Port 8517) - **🆕 NEW!**
+**Advanced Research Workflows with Multi-Agent Orchestration**
+- **Multi-Agent Research**: Specialized agents for search, analysis, synthesis, and evaluation
+- **LangGraph Workflows**: Observable, traceable research execution
+- **Academic Integration**: arXiv, PubMed, Crossref, and web search APIs
+- **Content Analysis**: Advanced text analysis with sentiment, complexity, and structure evaluation
+- **Export Capabilities**: PDF, Word, CSV, Markdown, and JSON formats
+
+**Try it**: Start a research session and watch multiple AI agents collaborate on your topic!
+
+---
+
+### 🏛️ **Multi-Agent Financial Analysis** (Port 8508)
+**LangGraph-Powered Financial Analysis Platform**
+- **7 Specialized Agents**: Market research, technical analysis, risk assessment, sentiment analysis, portfolio optimization, compliance, and report generation
+- **Dynamic Routing**: Intelligent agent selection based on query analysis
+- **Conditional Workflows**: Market-condition-aware decision making
+- **Real-time Alerts**: Critical market event interrupts
+- **Advanced Analytics**: Monte Carlo VaR, stress testing, correlation analysis
+
+**Try it**: Ask for comprehensive financial analysis and watch 7 agents work together!
+
+---
+
+### ✍️ **AI Content Creation System** (Port 8509)
+**Multi-Agent Content Generation Platform**
+- **7 Specialized Content Agents**: Research, strategy, writing, SEO, quality assurance, editing, and publishing
+- **LangGraph Orchestration**: Sophisticated workflow management
+- **Multi-Format Support**: Blog posts, social media, website copy, email campaigns, white papers
+- **SEO Optimization**: Comprehensive keyword analysis and search optimization
+- **Brand Compliance**: Automated brand voice and guideline adherence
+
+**Try it**: Describe your content needs and watch 7 AI agents create professional content!
+
+---
+
+### 🔬 **ARIA Research Intelligence** (Port 8510)
+**AutoGen-Powered Research Assistant**
+- **Microsoft AutoGen Integration**: Multi-agent framework for comprehensive research
+- **Multi-perspective Research**: Systematic investigation with balanced viewpoints
+- **Academic & Web Search**: Integration with arXiv, PubMed, Crossref, and web search APIs
+- **Content Analysis**: Advanced text analysis with sentiment, complexity, and structure evaluation
+- **Multi-format Export**: PDF, Word, CSV, Markdown, and JSON formats
+
+**Try it**: Start a research conversation and experience human-in-the-loop AI research!
+
+---
+
+### 🏥 **MARIA Medical Research** (Port 8511)
+**Healthcare Research Intelligence Agent**
+- **Medical Literature Analysis**: Specialized in medical research and treatment comparison
+- **AutoGen Framework**: Multi-agent conversation with healthcare specialists
+- **Medical Research Tools**: PubMed integration, clinical trial analysis, treatment comparison
+- **Healthcare User Proxy**: Specialized interface for medical professionals
+- **Medical Report Export**: Professional medical research reports and summaries
+
+**Try it**: Ask medical research questions and get AI-powered healthcare insights!
+
 ## 🔧 Configuration & Setup
 
 ### **Environment Variables (.env file)**
@@ -242,6 +355,15 @@ HUGGINGFACE_API_KEY=your_huggingface_key  # For multi-model support
 LANGCHAIN_API_KEY=your_langsmith_key      # For observability
 LANGCHAIN_PROJECT=resume-screening-agent-v2
 LANGCHAIN_TRACING_V2=true
+
+# Vector Databases (for semantic search)
+PINECONE_API_KEY=your_pinecone_key        # For insights explorer and support triage
+LANGFUSE_PUBLIC_KEY=your_langfuse_key     # For observability
+LANGFUSE_SECRET_KEY=your_langfuse_secret
+
+# Additional LLM Providers
+GROK_API_KEY=your_grok_key                # For content creation and financial analysis
+COHERE_API_KEY=your_cohere_key            # For competitive intelligence
 ```
 
 ### **API Key Setup Guide:**
@@ -252,6 +374,9 @@ LANGCHAIN_TRACING_V2=true
 4. **NewsAPI** (Free news): https://newsapi.org/register
 5. **HuggingFace** (For Resume Agent): https://huggingface.co/settings/tokens
 6. **LangSmith** (Observability): https://smith.langchain.com/
+7. **Pinecone** (Vector Database): https://www.pinecone.io/
+8. **Grok API** (xAI): https://console.x.ai/
+9. **Cohere** (Embeddings): https://cohere.ai/
 
 ## 🐳 Docker Deployment
 
@@ -271,7 +396,7 @@ docker-compose down
 ```
 
 ### **Services Included:**
-- All 7 AI agents in separate containers
+- All 18 AI agents in separate containers
 - Redis cache for inter-agent communication
 - Health checks and auto-restart policies
 - Volume mounting for persistent data
@@ -321,7 +446,7 @@ python test_system.py AAPL
 ```
 
 ### **Expected Results:**
-- ✅ All 7 agents show "Online" status in dashboard
+- ✅ All 18 agents show "Online" status in dashboard
 - ✅ Stock analysis completes in under 2 minutes
 - ✅ All API connections working (or graceful fallbacks)
 - ✅ Interactive dashboards load properly
@@ -395,18 +520,24 @@ streamlit run app.py --server.port 8507
 
 ## 🎉 Recent Updates
 
-### **v2.0 - Multi-Agent Stock Analysis System (Latest)**
-- 🆕 **Multi-Agent Stock Analysis**: AI-powered system with risk assessment, sentiment analysis, and technical analysis
-- 🔄 **Workflow Orchestration**: Parallel agent processing with conditional branching
-- 📊 **Enhanced Dashboard**: Real-time monitoring of all 7 agents
-- 🐳 **Production Ready**: Complete Docker deployment with health checks
-- 📈 **Performance Optimized**: Parallel processing reduces analysis time by 70%
+### **v3.0 - Complete 18-Agent Platform (Latest)**
+- 🆕 **18 Specialized AI Agents**: Comprehensive coverage across all business domains
+- 🔍 **Code Review Agent**: Enterprise-grade code analysis with multi-provider support
+- 📜 **Handwriting Document Agent**: OCR and historical document analysis
+- 🎯 **Customer Support Triage**: Automated ticket classification and routing
+- 🤖 **Comprehensive AI Assistant**: All-in-one information hub with 15+ APIs
+- 📚 **Research Agent**: Advanced research workflows with multi-agent orchestration
+- 🏥 **MARIA Medical Research**: Healthcare research intelligence
+- ✍️ **AI Content Creation**: Multi-agent content generation platform
+- 🔬 **ARIA Research Intelligence**: AutoGen-powered research assistant
+- 🏛️ **Multi-Agent Financial**: LangGraph financial analysis system
 
 ### **Key Technical Achievements:**
-- **Multi-Agent Architecture**: CrewAI framework for agent orchestration
-- **Real-time Data**: Yahoo Finance, Alpha Vantage, NewsAPI integration
-- **Advanced Analytics**: VaR calculations, sentiment scoring, technical indicators
-- **Production Infrastructure**: Docker, Redis, monitoring, and auto-scaling
+- **Multi-Agent Architecture**: CrewAI, LangGraph, and AutoGen frameworks
+- **Real-time Data**: Multiple API integrations with intelligent fallbacks
+- **Advanced Analytics**: Specialized analysis for each domain
+- **Production Infrastructure**: Docker, monitoring, and auto-scaling
+- **Observability**: LangSmith, Langfuse, and comprehensive logging
 
 ## 🤝 Contributing
 
@@ -423,7 +554,8 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 🙏 Acknowledgments
 
 - **CrewAI**: Multi-agent orchestration framework
-- **LangChain**: Language model integrations and tools
+- **LangGraph**: Language model integrations and tools
+- **Microsoft AutoGen**: Multi-agent conversation framework
 - **Streamlit**: Beautiful web interfaces
 - **Financial Data Providers**: Yahoo Finance, Alpha Vantage, Finnhub, NewsAPI
 - **Open Source Community**: Hundreds of libraries that make this possible
