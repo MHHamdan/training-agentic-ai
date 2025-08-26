@@ -38,10 +38,102 @@ class FinanceState(TypedDict):
     hitl_flag: Optional[bool]
 
 # === LLM ===
-if GROQ_API_KEY:
-    llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama3-70b-8192")
+# Use OpenAI instead of expired Groq API
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+if OPENAI_API_KEY:
+    try:
+        from openai import OpenAI
+        llm = OpenAI(api_key=OPENAI_API_KEY)
+    except ImportError:
+        llm = None
+        logger.error("OpenAI package not installed")
 else:
     llm = None
+
+# === STOCK DATA FUNCTIONS ===
+# Company name to symbol mapping
+company_to_symbol = {
+    'apple': 'AAPL', 'aapl': 'AAPL',
+    'google': 'GOOGL', 'alphabet': 'GOOGL', 'googl': 'GOOGL',
+    'microsoft': 'MSFT', 'msft': 'MSFT',
+    'amazon': 'AMZN', 'amzn': 'AMZN',
+    'tesla': 'TSLA', 'tsla': 'TSLA',
+    'meta': 'META', 'facebook': 'META', 'meta': 'META',
+    'nvidia': 'NVDA', 'nvda': 'NVDA',
+    'netflix': 'NFLX', 'nflx': 'NFLX',
+    'walmart': 'WMT', 'wmt': 'WMT',
+    'coca-cola': 'KO', 'cocacola': 'KO', 'ko': 'KO'
+}
+
+def extract_stock_symbol(text: str) -> str:
+    """Extract stock symbol from user input"""
+    text_lower = text.lower()
+    
+    # Check for direct symbol matches
+    for company, symbol in company_to_symbol.items():
+        if company in text_lower:
+            return symbol
+    
+    # Look for potential ticker symbols (3-5 uppercase letters)
+    import re
+    ticker_pattern = r'\b[A-Z]{3,5}\b'
+    matches = re.findall(ticker_pattern, text.upper())
+    if matches:
+        return matches[0]
+    
+    return None
+
+def get_stock_price(symbol: str) -> str:
+    """Fetch current stock price from Alpha Vantage API"""
+    if not ALPHA_VANTAGE_API_KEY:
+        return "❌ Alpha Vantage API key not configured."
+    
+    try:
+        url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={ALPHA_VANTAGE_API_KEY}'
+        logger.info(f"Fetching stock data for {symbol}")
+        
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        
+        # Check for API errors
+        if "Error Message" in data:
+            return f"❌ Error: {data['Error Message']}"
+        
+        if "Note" in data:
+            return f"⚠️ API Limit: {data['Note']}"
+        
+        if "Global Quote" not in data or not data["Global Quote"]:
+            return f"❌ No data found for symbol '{symbol}'. Please verify the ticker symbol."
+        
+        quote = data["Global Quote"]
+        current_price = float(quote["05. price"])
+        change = float(quote["09. change"])
+        change_percent = quote["10. change percent"].replace('%', '')
+        
+        # Format the response
+        change_emoji = "📈" if change >= 0 else "📉"
+        change_color = "🟢" if change >= 0 else "🔴"
+        
+        response = f"""📊 **{symbol} Stock Price**
+
+💰 **Current Price**: ${current_price:.2f}
+{change_emoji} **Change**: {change_color} ${change:+.2f} ({change_percent}%)
+
+*Data provided by Alpha Vantage*"""
+        
+        return response
+        
+    except requests.exceptions.Timeout:
+        return "⏱️ Request timed out. Please try again."
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Request error: {e}")
+        return f"❌ Network error: Unable to fetch stock data."
+    except KeyError as e:
+        logger.error(f"Data parsing error: {e}")
+        return f"❌ Error parsing stock data. API response format may have changed."
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return f"❌ Unexpected error: {str(e)}"
 
 # === STREAMLIT UI ===
 st.set_page_config(page_title="💸 FinAdvise", page_icon="💬", layout="wide")
@@ -163,10 +255,15 @@ if user_input := st.chat_input("Type your message..."):
     
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            # Simple responses for now
-            if "stock" in user_input.lower() and "aapl" in user_input.lower():
+            # Handle stock price requests with real API calls
+            if "stock" in user_input.lower() or "price" in user_input.lower():
                 if ALPHA_VANTAGE_API_KEY:
-                    response = "📈 **AAPL Stock Price**\n\nI'm working on fetching real-time stock data. For now, please check financial websites for current prices."
+                    # Extract stock symbol from query
+                    symbol = extract_stock_symbol(user_input)
+                    if symbol:
+                        response = get_stock_price(symbol)
+                    else:
+                        response = "📈 I couldn't identify a stock symbol in your query. Please specify a company name or ticker (e.g., AAPL, Tesla, Microsoft)."
                 else:
                     response = "📈 I'd love to help with stock prices, but I need the ALPHA_VANTAGE_API_KEY to be configured first."
             elif "budget" in user_input.lower():
@@ -176,7 +273,29 @@ if user_input := st.chat_input("Type your message..."):
                 profile = st.session_state.user_profile
                 response = f"""💡 **Personalized Financial Advice**\n\nFor someone your age ({profile['age']}) with {profile['risk tolerance']} risk tolerance:\n\n- Focus on building an emergency fund first\n- Consider diversified index funds for long-term growth\n- Take advantage of employer 401(k) matching\n- Review and optimize your expenses regularly\n\n*This advice is being enhanced with AI-powered personalization.*"""
             else:
-                response = "🤔 I'm still learning! Right now I can help with basic stock questions (try 'AAPL stock price'), budget summaries, and general financial advice. More features coming soon!"
+                # Use OpenAI LLM for general financial questions if available
+                if llm and OPENAI_API_KEY:
+                    try:
+                        profile = st.session_state.user_profile
+                        context = f"User profile: Age {profile['age']}, Annual income ${profile['income']}, Goals: {profile['goals']}, Risk tolerance: {profile['risk tolerance']}"
+                        
+                        messages = [
+                            {"role": "system", "content": f"You are FinAdvise, a helpful personal finance assistant. Based on the user's profile, provide helpful financial advice. {context}"},
+                            {"role": "user", "content": user_input}
+                        ]
+                        
+                        llm_response = llm.chat.completions.create(
+                            model="gpt-3.5-turbo",
+                            messages=messages,
+                            max_tokens=300,
+                            temperature=0.7
+                        )
+                        response = f"💡 {llm_response.choices[0].message.content}"
+                    except Exception as e:
+                        logger.error(f"LLM error: {e}")
+                        response = "🤔 I'm still learning! Right now I can help with stock price questions (try 'AAPL stock price'), budget summaries, and general financial advice. More features coming soon!"
+                else:
+                    response = "🤔 I'm still learning! Right now I can help with stock price questions (try 'AAPL stock price'), budget summaries, and general financial advice. More features coming soon!"
             
             st.markdown(response)
     

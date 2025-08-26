@@ -1,0 +1,58 @@
+# Production-Ready Code Review Agent Requirements
+# Author: Mohammed Hamdan
+
+# Core Dependencies
+streamlit>=1.28.0
+asyncio
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# AI/ML Libraries
+transformers>=4.35.0
+huggingface-hub>=0.17.0
+torch>=2.0.0
+
+# API Clients
+openai>=1.3.0
+anthropic>=0.7.0
+google-generativeai>=0.3.0
+groq>=0.4.0
+mistralai>=0.0.8
+
+# Observability
+langfuse>=2.0.0
+agentops>=0.2.0
+langchain>=0.1.0
+
+# Data Processing
+pandas>=2.0.0
+plotly>=5.17.0
+numpy>=1.24.0
+
+# Web Scraping & HTTP
+aiohttp>=3.8.0
+requests>=2.31.0
+
+# Code Analysis
+ast
+re
+logging
+
+# Development Tools
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+
+# Security
+cryptography>=41.0.0
+pyjwt>=2.8.0
+
+# Utility
+typing-extensions>=4.8.0
+dataclasses>=0.8
+enum34>=1.1.10
+datetime
+
+# Optional Performance
+uvloop>=0.18.0  # For faster asyncio on Unix systems

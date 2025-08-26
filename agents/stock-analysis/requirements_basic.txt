@@ -1,0 +1,20 @@
+# Essential Stock Analysis Agent Requirements (Basic Setup)
+
+# Web Framework
+streamlit>=1.28.0
+plotly>=5.17.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+requests>=2.31.0
+
+# Financial Data
+yfinance>=0.2.18
+
+# Configuration Management
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Async Support
+aiohttp>=3.8.0

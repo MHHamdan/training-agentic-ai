@@ -1,0 +1,278 @@
+% Algorithms for ARTEMIS paper
+
+% Algorithm 1: Hierarchical Byzantine Consensus
+\begin{algorithm}[htbp]
+\caption{Hierarchical Byzantine Consensus Protocol}
+\label{alg:hierarchical_consensus}
+\begin{algorithmic}[1]
+\REQUIRE Set of agents $\mathcal{A} = \{a_1, ..., a_n\}$ with at most $f < n/3$ Byzantine
+\REQUIRE Binary tree $T$ with agents at leaves, height $h = \lceil \log n \rceil$
+\REQUIRE Proposal value $v$ from leader
+\ENSURE Consensus decision $d$ or $\perp$ if no consensus
+\STATE \textbf{Phase 1: Bottom-up Aggregation}
+\FOR{level $\ell$ from $h$ down to $1$}
+    \FOR{each node $u$ at level $\ell$}
+        \IF{$u$ is leaf (agent)}
+            \STATE $vote[u] \gets sign(v, sk_u)$ \COMMENT{Cryptographic signature}
+        \ELSE
+            \STATE $children \gets Children(u)$
+            \STATE $votes \gets \emptyset$
+            \FOR{each child $c \in children$}
+                \STATE $votes \gets votes \cup \{vote[c]\}$
+            \ENDFOR
+            \STATE $valid \gets VerifySignatures(votes)$
+            \IF{$|valid| \geq \lceil 2|children|/3 \rceil$}
+                \STATE $vote[u] \gets ThresholdSign(valid, sk_u)$
+            \ELSE
+                \STATE $vote[u] \gets \perp$ \COMMENT{Insufficient votes}
+            \ENDIF
+        \ENDIF
+    \ENDFOR
+\ENDFOR
+\STATE \textbf{Phase 2: Top-down Decision}
+\STATE $root\_vote \gets vote[root]$
+\IF{$root\_vote \neq \perp$}
+    \STATE Broadcast $decision(v, root\_vote)$ to all agents
+    \STATE \textbf{return} $v$
+\ELSE
+    \STATE Broadcast $abort()$ to all agents
+    \STATE \textbf{return} $\perp$
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm 2: Federated Meta-Learning with Privacy
+\begin{algorithm}[htbp]
+\caption{Privacy-Preserving Federated Meta-Learning}
+\label{alg:federated_meta_learning}
+\begin{algorithmic}[1]
+\REQUIRE Agents $\mathcal{A} = \{a_1, ..., a_n\}$ with local datasets $\{\mathcal{D}_1, ..., \mathcal{D}_n\}$
+\REQUIRE Privacy parameters $(\epsilon, \delta)$, learning rate $\alpha$
+\REQUIRE Global model parameters $\theta_0$, noise scale $\sigma$
+\ENSURE Learned global policy $\theta^*$
+\STATE \textbf{Initialize:} $\theta \gets \theta_0$, $t \gets 0$
+\WHILE{not converged}
+    \STATE $t \gets t + 1$
+    \STATE \textbf{// Local computation at each agent}
+    \FOR{each agent $a_i$ in parallel}
+        \STATE $\theta_i^{local} \gets \theta$ \COMMENT{Download global model}
+        \STATE \textbf{// Inner loop: Task-specific adaptation}
+        \FOR{task $\tau_j$ sampled from $\mathcal{D}_i$}
+            \STATE $\phi_j \gets \theta_i^{local} - \beta \nabla_\theta \mathcal{L}_{\tau_j}(\theta_i^{local})$
+        \ENDFOR
+        \STATE \textbf{// Meta-gradient computation}
+        \STATE $g_i \gets \nabla_\theta \sum_j \mathcal{L}_{\tau_j}(\phi_j)$
+        \STATE \textbf{// Gradient clipping for bounded sensitivity}
+        \STATE $\tilde{g}_i \gets \text{clip}(g_i, C)$ where $C$ is clipping threshold
+        \STATE \textbf{// Add Gaussian noise for differential privacy}
+        \STATE $\eta_i \sim \mathcal{N}(0, \sigma^2 I)$
+        \STATE $\hat{g}_i \gets \tilde{g}_i + \eta_i$
+        \STATE Send $\hat{g}_i$ to aggregator
+    \ENDFOR
+    \STATE \textbf{// Global aggregation}
+    \STATE $\bar{g} \gets \frac{1}{n} \sum_{i=1}^n \hat{g}_i$
+    \STATE $\theta \gets \theta - \alpha \bar{g}$
+    \STATE \textbf{// Broadcast updated model}
+    \STATE Broadcast $\theta$ to all agents
+\ENDWHILE
+\STATE \textbf{return} $\theta$
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm 3: Byzantine Detection
+\begin{algorithm}[htbp]
+\caption{Cryptographic Byzantine Detection}
+\label{alg:byzantine_detection}
+\begin{algorithmic}[1]
+\REQUIRE Message history $\mathcal{H} = \{m_1, m_2, ..., m_k\}$ with signatures
+\REQUIRE Public keys $\{pk_1, ..., pk_n\}$ for all agents
+\REQUIRE Threshold $\tau$ for inconsistency detection
+\ENSURE Set of suspected Byzantine agents $\mathcal{B}$
+\STATE $\mathcal{B} \gets \emptyset$
+\STATE $inconsistencies \gets$ empty map
+\FOR{each agent $a_i$}
+    \STATE $messages_i \gets \{m \in \mathcal{H} : sender(m) = a_i\}$
+    \STATE $conflicts \gets 0$
+    \FOR{each pair $(m_j, m_k)$ in $messages_i$}
+        \IF{$Verify(m_j, pk_i) \land Verify(m_k, pk_i)$}
+            \IF{$Contradicts(m_j, m_k)$}
+                \STATE $conflicts \gets conflicts + 1$
+            \ENDIF
+        \ELSE
+            \STATE $conflicts \gets conflicts + 1$ \COMMENT{Invalid signature}
+        \ENDIF
+    \ENDFOR
+    \STATE $inconsistencies[a_i] \gets conflicts$
+    \IF{$conflicts > \tau$}
+        \STATE $\mathcal{B} \gets \mathcal{B} \cup \{a_i\}$
+    \ENDIF
+\ENDFOR
+\STATE \textbf{// Cross-validation with other honest agents}
+\FOR{each $a_i \in \mathcal{B}$}
+    \STATE $votes \gets 0$
+    \FOR{each $a_j \notin \mathcal{B}$}
+        \IF{$a_j$ reports $a_i$ as Byzantine}
+            \STATE $votes \gets votes + 1$
+        \ENDIF
+    \ENDFOR
+    \IF{$votes < \lceil n/2 \rceil$}
+        \STATE $\mathcal{B} \gets \mathcal{B} \setminus \{a_i\}$ \COMMENT{False positive}
+    \ENDIF
+\ENDFOR
+\STATE \textbf{return} $\mathcal{B}$
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm 4: Game-Theoretic Resource Allocation
+\begin{algorithm}[htbp]
+\caption{VCG-Based Resource Allocation}
+\label{alg:vcg_allocation}
+\begin{algorithmic}[1]
+\REQUIRE Agents $\mathcal{A} = \{a_1, ..., a_n\}$ with private valuations $\{v_1, ..., v_n\}$
+\REQUIRE Resources $\mathcal{R} = \{r_1, ..., r_m\}$ with capacities
+\REQUIRE Submitted bids $\{b_1, ..., b_n\}$ (potentially untruthful)
+\ENSURE Allocation $\mathbf{x}$ and payments $\mathbf{p}$
+\STATE \textbf{Phase 1: Optimal Allocation}
+\STATE Solve optimization problem:
+\begin{align}
+\mathbf{x}^* &= \arg\max_{\mathbf{x}} \sum_{i=1}^n b_i(x_i)\\
+\text{s.t. } &\sum_{i=1}^n x_{i,j} \leq capacity_j, \quad \forall j \in \mathcal{R}\\
+&x_{i,j} \geq 0, \quad \forall i,j
+\end{align}
+\STATE \textbf{Phase 2: Payment Calculation}
+\FOR{each agent $a_i$}
+    \STATE \textbf{// Compute allocation without agent $i$}
+    \STATE $\mathbf{x}^{-i} = \arg\max_{\mathbf{x}} \sum_{j \neq i} b_j(x_j)$ subject to capacity constraints
+    \STATE \textbf{// VCG payment: externality imposed on others}
+    \STATE $p_i = \sum_{j \neq i} b_j(x^{-i}_j) - \sum_{j \neq i} b_j(x^*_j)$
+\ENDFOR
+\STATE \textbf{Phase 3: Incentive Verification}
+\FOR{each agent $a_i$}
+    \STATE $utility_i = v_i(x^*_i) - p_i$
+    \STATE \textbf{// Verify truthfulness is dominant strategy}
+    \STATE Assert: $utility_i \geq v_i(x'_i) - p'_i$ for any alternative bid $b'_i$
+\ENDFOR
+\STATE \textbf{return} $(\mathbf{x}^*, \mathbf{p})$
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm 5: Compositional Verification
+\begin{algorithm}[htbp]
+\caption{Compositional Model Checking}
+\label{alg:compositional_verification}
+\begin{algorithmic}[1]
+\REQUIRE System components $\{S_1, ..., S_k\}$ with local properties $\{\phi_1, ..., \phi_k\}$
+\REQUIRE Interface specifications $\mathcal{I} = \{I_{1,2}, ..., I_{k-1,k}\}$
+\REQUIRE Global property $\Phi$ to verify
+\ENSURE Verification result: True/False with counterexample if False
+\STATE \textbf{Phase 1: Local Verification}
+\FOR{each component $S_i$}
+    \STATE $result_i \gets ModelCheck(S_i, \phi_i)$
+    \IF{$result_i = \text{False}$}
+        \STATE \textbf{return} (False, counterexample from $S_i$)
+    \ENDIF
+\ENDFOR
+\STATE \textbf{Phase 2: Interface Consistency}
+\FOR{each interface $I_{i,j} \in \mathcal{I}$}
+    \STATE $compatible \gets CheckCompatibility(S_i, S_j, I_{i,j})$
+    \IF{$\neg compatible$}
+        \STATE \textbf{return} (False, interface violation between $S_i$ and $S_j$)
+    \ENDIF
+\ENDFOR
+\STATE \textbf{Phase 3: Assume-Guarantee Reasoning}
+\STATE $assumptions \gets \emptyset$
+\STATE $guarantees \gets \emptyset$
+\FOR{each component $S_i$}
+    \STATE $A_i \gets$ assumptions about environment of $S_i$
+    \STATE $G_i \gets$ guarantees provided by $S_i$
+    \STATE $assumptions \gets assumptions \cup A_i$
+    \STATE $guarantees \gets guarantees \cup G_i$
+\ENDFOR
+\STATE \textbf{Phase 4: Global Property Verification}
+\STATE $environment\_assumptions \gets \bigwedge_i A_i$
+\STATE $system\_guarantees \gets \bigwedge_i G_i$
+\IF{$(environment\_assumptions \land system\_guarantees) \Rightarrow \Phi$}
+    \STATE \textbf{return} (True, $\emptyset$)
+\ELSE
+    \STATE \textbf{// Need explicit composition for counterexample}
+    \STATE $composed\_system \gets S_1 \parallel S_2 \parallel ... \parallel S_k$
+    \STATE $result \gets ModelCheck(composed\_system, \Phi)$
+    \STATE \textbf{return} $result$
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm 6: Adaptive Learning Rate
+\begin{algorithm}[htbp]
+\caption{Adaptive Learning Rate for Federated Meta-Learning}
+\label{alg:adaptive_lr}
+\begin{algorithmic}[1]
+\REQUIRE Gradient history $\{g_1, g_2, ..., g_t\}$
+\REQUIRE Initial learning rate $\alpha_0$, decay factors $\beta_1, \beta_2$
+\REQUIRE Smoothing parameter $\epsilon = 10^{-8}$
+\ENSURE Adaptive learning rate $\alpha_t$
+\STATE \textbf{// Exponential moving averages}
+\IF{$t = 1$}
+    \STATE $m_1 \gets g_1$, $v_1 \gets g_1^2$
+\ELSE
+    \STATE $m_t \gets \beta_1 m_{t-1} + (1-\beta_1) g_t$ \COMMENT{First moment}
+    \STATE $v_t \gets \beta_2 v_{t-1} + (1-\beta_2) g_t^2$ \COMMENT{Second moment}
+\ENDIF
+\STATE \textbf{// Bias correction}
+\STATE $\hat{m}_t \gets \frac{m_t}{1 - \beta_1^t}$
+\STATE $\hat{v}_t \gets \frac{v_t}{1 - \beta_2^t}$
+\STATE \textbf{// Adaptive learning rate}
+\STATE $\alpha_t \gets \frac{\alpha_0}{\sqrt{\hat{v}_t} + \epsilon}$
+\STATE \textbf{// Gradient clipping for stability}
+\STATE $\alpha_t \gets \min(\alpha_t, \alpha_{max})$
+\STATE \textbf{return} $\alpha_t$
+\end{algorithmic}
+\end{algorithm}
+
+% Algorithm 7: Fault Recovery Protocol
+\begin{algorithm}[htbp]
+\caption{Byzantine Fault Recovery and Reconfiguration}
+\label{alg:fault_recovery}
+\begin{algorithmic}[1]
+\REQUIRE Current configuration $\mathcal{C} = (\mathcal{A}, \mathcal{T})$ with agents $\mathcal{A}$ and topology $\mathcal{T}$
+\REQUIRE Byzantine detection result $\mathcal{B} \subseteq \mathcal{A}$
+\REQUIRE Backup agent pool $\mathcal{A}_{backup}$
+\ENSURE New configuration $\mathcal{C}' = (\mathcal{A}', \mathcal{T}')$
+\IF{$|\mathcal{B}| = 0$}
+    \STATE \textbf{return} $\mathcal{C}$ \COMMENT{No faults detected}
+\ENDIF
+\STATE \textbf{Phase 1: Quarantine Byzantine Agents}
+\FOR{each $a_i \in \mathcal{B}$}
+    \STATE Remove $a_i$ from active participation
+    \STATE Log evidence of Byzantine behavior
+    \STATE Notify monitoring system
+\ENDFOR
+\STATE $\mathcal{A}_{active} \gets \mathcal{A} \setminus \mathcal{B}$
+\STATE \textbf{Phase 2: Check System Viability}
+\STATE $remaining\_honest \gets |\mathcal{A}_{active}|$
+\STATE $new\_byzantine\_bound \gets \lfloor (remaining\_honest - 1)/3 \rfloor$
+\IF{$remaining\_honest < 4$} \COMMENT{Minimum for Byzantine tolerance}
+    \STATE \textbf{// System failure - need more agents}
+    \STATE $needed \gets 4 - remaining\_honest$
+    \IF{$|\mathcal{A}_{backup}| < needed$}
+        \STATE Raise system failure alert
+        \STATE \textbf{return} $\perp$
+    \ENDIF
+\ENDIF
+\STATE \textbf{Phase 3: Topology Reconfiguration}
+\STATE $replacement\_agents \gets$ Select from $\mathcal{A}_{backup}$
+\STATE $\mathcal{A}' \gets \mathcal{A}_{active} \cup replacement\_agents$
+\STATE \textbf{// Rebuild communication topology}
+\STATE $\mathcal{T}' \gets$ BuildHierarchicalTree$(\mathcal{A}')$
+\STATE \textbf{Phase 4: State Synchronization}
+\FOR{each new agent $a_j \in replacement\_agents$}
+    \STATE $consensus\_state \gets$ GetConsensusState$(\mathcal{A}_{active})$
+    \STATE Transfer $consensus\_state$ to $a_j$
+    \STATE Initialize $a_j$ with current global model parameters
+\ENDFOR
+\STATE \textbf{Phase 5: Resume Operations}
+\STATE Broadcast new configuration $\mathcal{C}'$ to all agents
+\STATE Resume consensus and learning protocols
+\STATE \textbf{return} $\mathcal{C}'$
+\end{algorithmic}
+\end{algorithm}

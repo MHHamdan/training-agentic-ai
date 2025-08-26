@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI: From Theory to Production-Ready Multi-Agent Systems</title>
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
+    
+    <!-- Custom styles -->
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #e17055;
+        }
+        
+        .reveal .slides section {
+            text-align: left;
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .reveal h1 {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .title-slide {
+            text-align: center !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            padding: 2rem;
+            border-radius: 20px;
+        }
+        
+        .title-slide h1, .title-slide h2, .title-slide h3 {
+            color: white !important;
+        }
+        
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .agent-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .agent-icon {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .agent-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .tech-badge {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            margin: 0.2rem;
+            display: inline-block;
+        }
+        
+        .framework-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin: 0.3rem;
+            display: inline-block;
+        }
+        
+        .architecture-diagram {
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .workflow-step {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            margin: 0.5rem;
+            display: inline-block;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            margin: 1rem 0;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #fef7e0 100%);
+            border-left: 5px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d4edda 0%, #f0f9f0 100%);
+            border-left: 5px solid var(--accent-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .metric-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 0.7rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .demo-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .demo-step {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 0.5rem;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .demo-step::after {
+            content: "→";
+            position: absolute;
+            right: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .demo-step:last-child::after {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Title Slide -->
+            <section class="title-slide">
+                <h1>🤖 Agentic AI Systems</h1>
+                <h2>From Theory to Production-Ready Multi-Agent Orchestration</h2>
+                <h3>A Comprehensive 16-Agent Ecosystem</h3>
+                <div style="margin-top: 2rem;">
+                    <p><strong>Presented by:</strong> Mohammed Hamdan</p>
+                    <p><strong>Academic Audience:</strong> Professors & University Students</p>
+                    <p><strong>Date:</strong> August 2025</p>
+                </div>
+                <div style="margin-top: 2rem; font-size: 0.9rem;">
+                    <span class="framework-badge">LangGraph</span>
+                    <span class="framework-badge">CrewAI</span>
+                    <span class="framework-badge">AutoGen</span>
+                    <span class="framework-badge">LangChain</span>
+                    <span class="framework-badge">Multi-Model</span>
+                </div>
+            </section>
+
+            <!-- Agenda -->
+            <section>
+                <h2>📋 Presentation Agenda</h2>
+                <div style="margin-left: 2rem;">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ol style="font-size: 1.1rem; line-height: 1.8;">
+                        <li><strong>Theoretical Foundations</strong> - Core concepts in Agentic AI</li>
+                        <li><strong>Architectural Patterns</strong> - Multi-agent system design</li>
+                        <li><strong>Framework Comparison</strong> - LangGraph vs CrewAI vs AutoGen</li>
+                        <li><strong>Production Implementation</strong> - 16-agent ecosystem walkthrough</li>
+                        <li><strong>Live Demonstration</strong> - Real system in action</li>
+                        <li><strong>Academic Research Implications</strong> - Future directions</li>
+                    </ol>
+                </div>
+                <div class="highlight-box">
+                    <strong>📚 Academic Context:</strong> This presentation bridges theoretical AI research with practical enterprise-grade implementation, providing insights for both academic research and industry applications.
+                </div>
+            </section>
+
+            <!-- Part 1: Foundations -->
+            <section>
+                <section>
+                    <h1>Part I: Agentic AI Foundations</h1>
+                    <h2>🧠 From Reactive to Proactive AI</h2>
+                </section>
+
+                <section>
+                    <h2>🔬 What is Agentic AI?</h2>
+                    <div class="highlight-box">
+                        <h3>Definition</h3>
+                        <p><strong>Agentic AI</strong> refers to artificial intelligence systems that can <em>autonomously plan, reason, and take actions</em> to achieve goals, rather than simply responding to prompts.</p>
+                    </div>
+                    
+                    <h3>📊 Evolution of AI Paradigms</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Paradigm</th>
+                            <th>Characteristics</th>
+                            <th>Example</th>
+                            <th>Limitations</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Reactive AI</strong></td>
+                            <td>Responds to inputs</td>
+                            <td>ChatGPT prompts</td>
+                            <td>No planning, memory, or autonomy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tool-Using AI</strong></td>
+                            <td>Can use external tools</td>
+                            <td>Function calling LLMs</td>
+                            <td>Limited to predefined tools</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Agentic AI</strong></td>
+                            <td>Plans, reasons, acts autonomously</td>
+                            <td>Our multi-agent system</td>
+                            <td>Complexity, reliability challenges</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>🏗️ Core Components of Agentic Systems</h2>
+                    <div class="architecture-diagram">
+                        <h3>🎯 Agent Architecture</h3>
+                        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin: 2rem 0;">
+                            <div class="workflow-step">🧠 Planning</div>
+                            <div class="workflow-step">💭 Reasoning</div>
+                            <div class="workflow-step">🔧 Tool Use</div>
+                            <div class="workflow-step">💾 Memory</div>
+                            <div class="workflow-step">🤝 Collaboration</div>
+                        </div>
+                    </div>
+                    
+                    <h3>📚 Key Capabilities</h3>
+                    <ul style="font-size: 1rem; line-height: 1.6;">
+                        <li><strong>Goal Decomposition:</strong> Break complex tasks into manageable subtasks</li>
+                        <li><strong>Dynamic Planning:</strong> Adapt strategies based on intermediate results</li>
+                        <li><strong>Multi-Step Reasoning:</strong> Chain logical steps to reach conclusions</li>
+                        <li><strong>Context Awareness:</strong> Maintain state across interactions</li>
+                        <li><strong>Error Recovery:</strong> Handle failures and retry with different approaches</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🔄 Agent Reasoning Patterns</h2>
+                    <h3>🧩 ReAct (Reasoning + Acting)</h3>
+                    <div class="code-block">
+Thought: I need to find the latest stock price for Apple
+Action: fetch_stock_price("AAPL")
+Observation: Current AAPL price is $185.32, up 2.3%
+Thought: The user also asked about market sentiment
+Action: analyze_sentiment("AAPL news today")
+Observation: 78% positive sentiment based on earnings report
+Thought: I now have enough information to provide a comprehensive response
+Final Answer: Apple (AAPL) is currently trading at $185.32...
+                    </div>
+                    
+                    <h3>🌊 Chain of Thought vs Agentic Planning</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1rem 0;">
+                        <div>
+                            <h4>🔗 Chain of Thought</h4>
+                            <ul>
+                                <li>Linear reasoning</li>
+                                <li>Pre-planned steps</li>
+                                <li>No dynamic adaptation</li>
+                                <li>Single model execution</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>🤖 Agentic Planning</h4>
+                            <ul>
+                                <li>Dynamic reasoning</li>
+                                <li>Adaptive planning</li>
+                                <li>Environment feedback</li>
+                                <li>Multi-agent collaboration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🏢 Multi-Agent Systems (MAS)</h2>
+                    <h3>🎯 Why Multiple Agents?</h3>
+                    <div class="success-box">
+                        <h4>✅ Benefits of Multi-Agent Architectures</h4>
+                        <ul>
+                            <li><strong>Specialization:</strong> Each agent excels at specific tasks</li>
+                            <li><strong>Scalability:</strong> Add agents without affecting others</li>
+                            <li><strong>Fault Tolerance:</strong> System continues if individual agents fail</li>
+                            <li><strong>Parallel Processing:</strong> Multiple tasks simultaneously</li>
+                            <li><strong>Modularity:</strong> Easy to update, test, and maintain</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>🔄 Agent Communication Patterns</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0;">
+                        <div class="agent-card">
+                            <div class="agent-icon">📞</div>
+                            <div class="agent-name">Direct Communication</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Agent-to-agent messaging</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🎛️</div>
+                            <div class="agent-name">Orchestrated</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Central coordinator</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📋</div>
+                            <div class="agent-name">Shared Memory</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Common knowledge base</div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Part 2: Frameworks -->
+            <section>
+                <section>
+                    <h1>Part II: Agentic AI Frameworks</h1>
+                    <h2>🛠️ Tools for Building Agent Systems</h2>
+                </section>
+
+                <section>
+                    <h2>📊 Framework Landscape</h2>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Framework</th>
+                            <th>Strength</th>
+                            <th>Best For</th>
+                            <th>Our Usage</th>
+                        </tr>
+                        <tr>
+                            <td><strong>🦜 LangGraph</strong></td>
+                            <td>Workflow orchestration</td>
+                            <td>Complex multi-step processes</td>
+                            <td>8 agents</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🚢 CrewAI</strong></td>
+                            <td>Role-based collaboration</td>
+                            <td>Specialized team workflows</td>
+                            <td>3 agents</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🤖 AutoGen</strong></td>
+                            <td>Conversational agents</td>
+                            <td>Research & analysis tasks</td>
+                            <td>2 agents</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🔧 Custom</strong></td>
+                            <td>Full control</td>
+                            <td>Specialized requirements</td>
+                            <td>3 agents</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">16</div>
+                            <div class="metric-label">Total Agents</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">4</div>
+                            <div class="metric-label">Frameworks</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">12</div>
+                            <div class="metric-label">Tech Stacks</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">50+</div>
+                            <div class="metric-label">AI Models</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🦜 LangGraph Deep Dive</h2>
+                    <div class="highlight-box">
+                        <h3>🎯 What is LangGraph?</h3>
+                        <p>LangGraph is a framework for building <strong>stateful, multi-actor applications</strong> with Large Language Models. It enables the creation of cyclical workflows with built-in persistence and human-in-the-loop capabilities.</p>
+                    </div>
+                    
+                    <h3>🏗️ LangGraph Architecture</h3>
+                    <div class="code-block">
+from langgraph.graph import StateGraph, END
+from typing import TypedDict
+
+class WorkflowState(TypedDict):
+    user_query: str
+    analysis_result: dict
+    final_response: str
+
+# Create workflow
+workflow = StateGraph(WorkflowState)
+workflow.add_node("analyze", analyze_intent)
+workflow.add_node("process", process_data)
+workflow.add_node("respond", generate_response)
+
+# Define flow
+workflow.set_entry_point("analyze")
+workflow.add_edge("analyze", "process")
+workflow.add_edge("process", "respond")
+workflow.add_edge("respond", END)
+
+app = workflow.compile()
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🚢 CrewAI vs 🤖 AutoGen</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h3>🚢 CrewAI</h3>
+                            <div class="agent-card">
+                                <h4>🎭 Role-Based Design</h4>
+                                <ul style="font-size: 0.8rem;">
+                                    <li><strong>Agents:</strong> Specialized roles</li>
+                                    <li><strong>Tasks:</strong> Clear objectives</li>
+                                    <li><strong>Tools:</strong> Shared resources</li>
+                                    <li><strong>Process:</strong> Orchestrated workflow</li>
+                                </ul>
+                            </div>
+                            <div class="code-block" style="font-size: 0.7rem;">
+crew = Crew(
+    agents=[analyst, researcher, writer],
+    tasks=[analyze_task, research_task, write_task],
+    process=Process.sequential
+)
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3>🤖 AutoGen</h3>
+                            <div class="agent-card">
+                                <h4>💬 Conversation-Driven</h4>
+                                <ul style="font-size: 0.8rem;">
+                                    <li><strong>Agents:</strong> Conversational actors</li>
+                                    <li><strong>Chat:</strong> Turn-based interaction</li>
+                                    <li><strong>Human-in-loop:</strong> Built-in approval</li>
+                                    <li><strong>Flexibility:</strong> Dynamic conversations</li>
+                                </ul>
+                            </div>
+                            <div class="code-block" style="font-size: 0.7rem;">
+user_proxy = UserProxyAgent("user")
+assistant = AssistantAgent("assistant")
+user_proxy.initiate_chat(assistant, 
+    message="Research climate change")
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🎯 Framework Selection Criteria</h2>
+                    <h3>🔍 Decision Matrix</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Use Case</th>
+                            <th>Recommended Framework</th>
+                            <th>Rationale</th>
+                        </tr>
+                        <tr>
+                            <td>Complex workflow orchestration</td>
+                            <td>🦜 LangGraph</td>
+                            <td>State management, cyclical flows</td>
+                        </tr>
+                        <tr>
+                            <td>Specialized team collaboration</td>
+                            <td>🚢 CrewAI</td>
+                            <td>Role-based design, clear hierarchies</td>
+                        </tr>
+                        <tr>
+                            <td>Research & analysis</td>
+                            <td>🤖 AutoGen</td>
+                            <td>Human oversight, conversational flow</td>
+                        </tr>
+                        <tr>
+                            <td>High-performance, specialized</td>
+                            <td>🔧 Custom</td>
+                            <td>Full control, optimized for specific needs</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="success-box">
+                        <h4>💡 Key Insight</h4>
+                        <p>Our system demonstrates <strong>polyglot architecture</strong> - using the right framework for each specific use case rather than forcing a single solution.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Part 3: System Architecture -->
+            <section>
+                <section>
+                    <h1>Part III: System Architecture</h1>
+                    <h2>🏗️ Production-Grade Multi-Agent Platform</h2>
+                </section>
+
+                <section>
+                    <h2>🌐 System Overview</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">16</div>
+                            <div class="metric-label">Specialized Agents</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">14</div>
+                            <div class="metric-label">Unique Ports</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">8</div>
+                            <div class="metric-label">Domain Areas</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">100%</div>
+                            <div class="metric-label">Containerized</div>
+                        </div>
+                    </div>
+                    
+                    <h3>🏢 Domain Coverage</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card">
+                            <div class="agent-icon">⚖️</div>
+                            <div class="agent-name">Legal & Compliance</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">💰</div>
+                            <div class="agent-name">Financial Services</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🏥</div>
+                            <div class="agent-name">Healthcare & Research</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🎧</div>
+                            <div class="agent-name">Customer Support</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">✍️</div>
+                            <div class="agent-name">Content Creation</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📊</div>
+                            <div class="agent-name">Data Analytics</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🔍</div>
+                            <div class="agent-name">Research Intelligence</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📄</div>
+                            <div class="agent-name">Document Processing</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🎭 Agent Specializations</h2>
+                    <div style="font-size: 0.85rem;">
+                        <div class="agent-grid">
+                            <div class="agent-card">
+                                <div class="agent-icon">🎧</div>
+                                <div class="agent-name">Customer Support Agent</div>
+                                <div class="tech-badge">LangGraph</div>
+                                <div class="tech-badge">Gemini</div>
+                            </div>
+                            <div class="agent-card">
+                                <div class="agent-icon">⚖️</div>
+                                <div class="agent-name">Legal Document Review</div>
+                                <div class="tech-badge">LangChain</div>
+                                <div class="tech-badge">FAISS</div>
+                            </div>
+                            <div class="agent-card">
+                                <div class="agent-icon">💰</div>
+                                <div class="agent-name">Finance Advisor</div>
+                                <div class="tech-badge">LangGraph</div>
+                                <div class="tech-badge">Groq</div>
+                            </div>
+                            <div class="agent-card">
+                                <div class="agent-icon">🤖</div>
+                                <div class="agent-name">AI Assistant Hub</div>
+                                <div class="tech-badge">Multi-API</div>
+                                <div class="tech-badge">LangSmith</div>
+                            </div>
+                            <div class="agent-card">
+                                <div class="agent-icon">🔍</div>
+                                <div class="agent-name">Competitive Intel</div>
+                                <div class="tech-badge">Cohere</div>
+                                <div class="tech-badge">RAG</div>
+                            </div>
+                            <div class="agent-card">
+                                <div class="agent-icon">📊</div>
+                                <div class="agent-name">Insights Explorer</div>
+                                <div class="tech-badge">Phidata</div>
+                                <div class="tech-badge">Pinecone</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>🚀 Advanced Multi-Agent Systems</h3>
+                    <ul style="font-size: 0.9rem; line-height: 1.6;">
+                        <li><strong>Stock Analysis Extended:</strong> CrewAI with 5+ specialized financial agents</li>
+                        <li><strong>Content Creation System:</strong> 7-agent LangGraph workflow for SEO content</li>
+                        <li><strong>ARIA (Research):</strong> AutoGen conversational research system</li>
+                        <li><strong>MARIA (Medical):</strong> Healthcare research with HITL approval</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🔄 System Architecture Patterns</h2>
+                    <div class="architecture-diagram">
+                        <h3>🏗️ Multi-Layer Architecture</h3>
+                        <div style="display: flex; justify-content: space-between; margin: 2rem 0;">
+                            <div style="text-align: center;">
+                                <div class="workflow-step">🖥️ Presentation Layer</div>
+                                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Streamlit UIs<br/>Port 8501-8517</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div class="workflow-step">🧠 Agent Layer</div>
+                                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Specialized Agents<br/>Business Logic</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div class="workflow-step">🔧 Service Layer</div>
+                                <div style="font-size: 0.8rem; margin-top: 0.5rem;">APIs & Tools<br/>External Services</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div class="workflow-step">💾 Data Layer</div>
+                                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Vector DBs<br/>Persistent Storage</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>📡 Communication Patterns</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                        <div class="agent-card">
+                            <div class="agent-icon">🎛️</div>
+                            <div class="agent-name">Centralized Dashboard</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Port 8000 - Orchestrator</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🔗</div>
+                            <div class="agent-name">Agent Independence</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Isolated services</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📊</div>
+                            <div class="agent-name">Observability</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">LangSmith, AgentOps</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🛡️ Production Considerations</h2>
+                    <h3>⚡ Performance & Scalability</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Implementation</th>
+                            <th>Benefits</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Containerization</strong></td>
+                            <td>Docker + Docker Compose</td>
+                            <td>Isolation, scalability, deployment</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Load Balancing</strong></td>
+                            <td>Port-based routing</td>
+                            <td>Distribute traffic, fault tolerance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Monitoring</strong></td>
+                            <td>LangSmith, AgentOps, Langfuse</td>
+                            <td>Observability, debugging, optimization</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Caching</strong></td>
+                            <td>Redis, Vector DB caching</td>
+                            <td>Reduced API calls, faster responses</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="success-box">
+                        <h4>🏆 Production-Ready Features</h4>
+                        <ul>
+                            <li><strong>Fault Tolerance:</strong> Agent failures don't cascade</li>
+                            <li><strong>Observability:</strong> Full request tracing and metrics</li>
+                            <li><strong>Human-in-Loop:</strong> Approval workflows where critical</li>
+                            <li><strong>Multi-Model:</strong> Reduce vendor lock-in, improve reliability</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Part 4: Technical Deep Dive -->
+            <section>
+                <section>
+                    <h1>Part IV: Technical Deep Dive</h1>
+                    <h2>🔬 Implementation Details & Best Practices</h2>
+                </section>
+
+                <section>
+                    <h2>🧪 Advanced Agent Capabilities</h2>
+                    <h3>📋 Resume Screening Agent - Multi-Model Approach</h3>
+                    <div class="code-block">
+# Multi-model comparison for unbiased evaluation
+models = [
+    "microsoft/DialoGPT-medium",
+    "facebook/blenderbot-400M-distill", 
+    "google/flan-t5-base",
+    "sentence-transformers/all-MiniLM-L6-v2",
+    # ... 15+ models total
+]
+
+async def multi_model_analysis(resume_text):
+    results = []
+    for model in models:
+        score = await analyze_with_model(model, resume_text)
+        results.append({
+            'model': model,
+            'technical_score': score.technical,
+            'experience_score': score.experience,
+            'cultural_fit': score.cultural_fit
+        })
+    
+    # Aggregate results with confidence intervals
+    final_score = aggregate_scores(results)
+    return final_score
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🩺 MARIA - Medical Research Agent</h2>
+                    <div class="highlight-box">
+                        <h3>🎯 Specialized Healthcare AI</h3>
+                        <p>MARIA demonstrates domain-specific agentic AI with <strong>human-in-the-loop medical approval</strong> for critical healthcare decisions.</p>
+                    </div>
+                    
+                    <h3>🔬 Medical Research Workflow</h3>
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap; margin: 1rem 0;">
+                        <div class="workflow-step">📚 Literature Search</div>
+                        <div class="workflow-step">🔍 Evidence Analysis</div>
+                        <div class="workflow-step">⚖️ Bias Detection</div>
+                        <div class="workflow-step">👨‍⚕️ Medical Review</div>
+                        <div class="workflow-step">📊 PRISMA Report</div>
+                    </div>
+                    
+                    <div class="code-block">
+# Medical research with HITL approval
+medical_crew = Crew(
+    agents=[
+        literature_agent,  # PubMed API integration
+        analysis_agent,    # Clinical trial evaluation  
+        bias_detector,     # Methodology assessment
+        medical_reviewer   # Human oversight required
+    ],
+    tasks=[search_task, analyze_task, review_task],
+    human_input=True  # Critical for medical decisions
+)
+                    </div>
+                </section>
+
+                <section>
+                    <h2>📈 Stock Analysis - Multi-Agent Financial Intelligence</h2>
+                    <h3>🏗️ CrewAI Financial Analysis System</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card">
+                            <div class="agent-icon">📊</div>
+                            <div class="agent-name">Fundamental Analyst</div>
+                            <div style="font-size: 0.8rem;">P/E, Revenue, Growth</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📈</div>
+                            <div class="agent-name">Technical Analyst</div>
+                            <div style="font-size: 0.8rem;">Charts, Indicators, Trends</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📰</div>
+                            <div class="agent-name">Sentiment Analyst</div>
+                            <div style="font-size: 0.8rem;">News, Social Media</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">⚠️</div>
+                            <div class="agent-name">Risk Assessor</div>
+                            <div style="font-size: 0.8rem;">VaR, Beta, Volatility</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📝</div>
+                            <div class="agent-name">Report Generator</div>
+                            <div style="font-size: 0.8rem;">SEC Compliant Reports</div>
+                        </div>
+                    </div>
+                    
+                    <div class="success-box">
+                        <h4>🏛️ Regulatory Compliance</h4>
+                        <p>Financial agents implement <strong>SEC/FINRA compliance</strong> with appropriate disclaimers and risk warnings.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🔍 Observability & Monitoring</h2>
+                    <h3>📊 Multi-Platform Observability Stack</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Platform</th>
+                            <th>Used By</th>
+                            <th>Capabilities</th>
+                        </tr>
+                        <tr>
+                            <td><strong>🦜 LangSmith</strong></td>
+                            <td>LangGraph agents</td>
+                            <td>Trace workflows, debug LLM calls, performance metrics</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🔧 AgentOps</strong></td>
+                            <td>CrewAI agents</td>
+                            <td>Agent performance, cost tracking, usage analytics</td>
+                        </tr>
+                        <tr>
+                            <td><strong>📈 Langfuse</strong></td>
+                            <td>Research agents</td>
+                            <td>LLM observability, prompt management, evaluation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>📊 Custom Metrics</strong></td>
+                            <td>All agents</td>
+                            <td>Business metrics, success rates, user satisfaction</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="code-block">
+# Example: LangSmith tracing in LangGraph
+@traceable
+async def analyze_intent(state: WorkflowState):
+    """Traceable workflow step for observability"""
+    with get_current_run_tree() as run_tree:
+        run_tree.add_tags(["intent-analysis", "workflow"])
+        # Analysis logic here
+        return updated_state
+                    </div>
+                </section>
+
+                <section>
+                    <h2>⚡ Performance Optimization</h2>
+                    <h3>🚀 Optimization Strategies</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4>🔄 Concurrent Processing</h4>
+                            <ul style="font-size: 0.9rem;">
+                                <li><strong>Async/Await:</strong> Non-blocking API calls</li>
+                                <li><strong>Thread Pools:</strong> Parallel agent execution</li>
+                                <li><strong>Connection Pooling:</strong> Efficient HTTP clients</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>💾 Intelligent Caching</h4>
+                            <ul style="font-size: 0.9rem;">
+                                <li><strong>Vector Caching:</strong> Embeddings storage</li>
+                                <li><strong>API Response Cache:</strong> Reduce external calls</li>
+                                <li><strong>Model Caching:</strong> Warm model instances</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">2-4s</div>
+                            <div class="metric-label">Avg Response</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">95%</div>
+                            <div class="metric-label">Success Rate</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">16</div>
+                            <div class="metric-label">Concurrent Agents</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">5x</div>
+                            <div class="metric-label">Performance Gain</div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Part 5: Demo Guide -->
+            <section>
+                <section>
+                    <h1>Part V: Live System Demonstration</h1>
+                    <h2>🎭 Seeing Agentic AI in Action</h2>
+                </section>
+
+                <section>
+                    <h2>🎯 Demo Flow</h2>
+                    <div class="demo-flow">
+                        <div class="demo-step">1. System Overview</div>
+                        <div class="demo-step">2. Agent Selection</div>
+                        <div class="demo-step">3. Real-time Workflow</div>
+                        <div class="demo-step">4. Multi-Agent Comparison</div>
+                        <div class="demo-step">5. Observability Dashboard</div>
+                    </div>
+                    
+                    <h3>📋 Demo Scenarios</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card">
+                            <div class="agent-icon">🤖</div>
+                            <div class="agent-name">Comprehensive AI Assistant</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">
+                                <strong>Demo:</strong> "What should I do this weekend?"<br/>
+                                <strong>Shows:</strong> Multi-API integration, workflow visualization
+                            </div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📈</div>
+                            <div class="agent-name">Stock Analysis</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">
+                                <strong>Demo:</strong> "Analyze AAPL stock"<br/>
+                                <strong>Shows:</strong> Multi-agent collaboration, specialized analysis
+                            </div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🔬</div>
+                            <div class="agent-name">Research Agent (ARIA)</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">
+                                <strong>Demo:</strong> "Research quantum computing trends"<br/>
+                                <strong>Shows:</strong> AutoGen conversations, human-in-loop
+                            </div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">📄</div>
+                            <div class="agent-name">Resume Screening</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">
+                                <strong>Demo:</strong> Upload sample resume<br/>
+                                <strong>Shows:</strong> Multi-model analysis, bias reduction
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>📊 Demo Talking Points</h2>
+                    <h3>🎯 What to Highlight</h3>
+                    <div class="highlight-box">
+                        <h4>🔍 For Academic Audience</h4>
+                        <ul>
+                            <li><strong>Theoretical Foundations:</strong> How academic concepts translate to production</li>
+                            <li><strong>Multi-Framework Approach:</strong> Comparative analysis of frameworks</li>
+                            <li><strong>Observability:</strong> How to debug and optimize agentic systems</li>
+                            <li><strong>Evaluation Metrics:</strong> Measuring agent performance and reliability</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>🧪 Research Opportunities</h3>
+                    <ul style="font-size: 0.9rem; line-height: 1.6;">
+                        <li><strong>Agent Communication Protocols:</strong> Optimal message passing strategies</li>
+                        <li><strong>Multi-Model Ensemble Methods:</strong> Reducing bias through model diversity</li>
+                        <li><strong>Human-AI Collaboration:</strong> Effective human-in-the-loop patterns</li>
+                        <li><strong>Domain-Specific Optimization:</strong> Tailoring agents for specialized fields</li>
+                        <li><strong>Scalability Challenges:</strong> Managing large agent ecosystems</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🎤 Demo Script</h2>
+                    <div class="code-block">
+# Demo 1: System Dashboard
+"Let's start with our central command center at localhost:8000"
+→ Show agent grid with live status indicators
+→ Highlight 16 agents across 8 domains
+→ Click "Refresh Agent Connectivity"
+
+# Demo 2: Comprehensive AI Assistant (Port 8517)
+"Ask: What's the weather and latest tech news?"
+→ Show workflow visualization in real-time
+→ Highlight 6-step process: Intent → Selection → Collection → etc.
+→ Display confidence scores and performance metrics
+
+# Demo 3: Multi-Agent Stock Analysis (Port 8513)
+"Analyze TSLA stock with risk assessment"
+→ Show CrewAI collaboration between 5 specialized agents
+→ Highlight regulatory compliance features
+→ Display comprehensive financial report generation
+
+# Demo 4: Research Intelligence (Port 8510)
+"Research: 'Latest developments in quantum computing'"
+→ Show AutoGen multi-agent conversation
+→ Demonstrate human-in-the-loop approval
+→ Export research report with citations
+
+# Demo 5: Observability Dashboard
+→ Open LangSmith traces for workflow steps
+→ Show performance metrics and error handling
+→ Demonstrate debugging capabilities
+                    </div>
+                </section>
+
+                <section>
+                    <h2>❓ Q&A Preparation</h2>
+                    <h3>🤔 Expected Questions</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Question Category</th>
+                            <th>Sample Questions</th>
+                            <th>Key Points to Address</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Technical</strong></td>
+                            <td>How do you handle agent failures?</td>
+                            <td>Fault isolation, graceful degradation, retry logic</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td>How many agents can you run?</td>
+                            <td>Container orchestration, resource management</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Academic</strong></td>
+                            <td>What's novel about your approach?</td>
+                            <td>Multi-framework polyglot architecture, production focus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Practical</strong></td>
+                            <td>How do you evaluate agent performance?</td>
+                            <td>Multi-dimensional metrics, human feedback loops</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <!-- Part 6: Research Implications -->
+            <section>
+                <section>
+                    <h1>Part VI: Academic Research Implications</h1>
+                    <h2>🔮 Future Directions & Open Problems</h2>
+                </section>
+
+                <section>
+                    <h2>🧠 Open Research Questions</h2>
+                    <h3>🔍 Current Challenges</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4>🤝 Agent Coordination</h4>
+                            <ul style="font-size: 0.9rem;">
+                                <li>Optimal communication protocols</li>
+                                <li>Dynamic team formation</li>
+                                <li>Conflict resolution mechanisms</li>
+                                <li>Load balancing strategies</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>🎯 Performance Optimization</h4>
+                            <ul style="font-size: 0.9rem;">
+                                <li>Adaptive planning algorithms</li>
+                                <li>Resource allocation efficiency</li>
+                                <li>Context-aware task routing</li>
+                                <li>Multi-objective optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-box">
+                        <h4>🏆 Our Contributions to the Field</h4>
+                        <ul>
+                            <li><strong>Polyglot Architecture:</strong> Framework-agnostic agent design patterns</li>
+                            <li><strong>Production Observability:</strong> Comprehensive monitoring for agentic systems</li>
+                            <li><strong>Domain Specialization:</strong> Sector-specific agent optimization strategies</li>
+                            <li><strong>Human-AI Collaboration:</strong> Effective HITL integration patterns</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>📈 Research Opportunities</h2>
+                    <h3>🎓 Student Research Projects</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card">
+                            <div class="agent-icon">🧪</div>
+                            <div class="agent-name">Agent Evaluation Framework</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Develop standardized metrics for multi-agent system performance</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🔄</div>
+                            <div class="agent-name">Dynamic Task Allocation</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">ML-based agent selection and load balancing</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🛡️</div>
+                            <div class="agent-name">Agent Security Models</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Secure multi-agent communication protocols</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">🧠</div>
+                            <div class="agent-name">Emergent Behavior Analysis</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Study unexpected behaviors in agent interactions</div>
+                        </div>
+                    </div>
+                    
+                    <h3>🏛️ Faculty Research Areas</h3>
+                    <ul style="font-size: 0.95rem; line-height: 1.6;">
+                        <li><strong>Theoretical Foundations:</strong> Mathematical models for agent coordination</li>
+                        <li><strong>Behavioral Economics:</strong> Game theory applications in multi-agent systems</li>
+                        <li><strong>Distributed Systems:</strong> Fault-tolerant agent architectures</li>
+                        <li><strong>HCI Research:</strong> Human-agent interaction patterns and usability</li>
+                        <li><strong>Ethics & AI Safety:</strong> Responsible AI in autonomous agent systems</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🌟 Industry Applications</h2>
+                    <h3>🏢 Real-World Impact</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Industry</th>
+                            <th>Use Cases</th>
+                            <th>Our Agent Examples</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Healthcare</strong></td>
+                            <td>Medical research, diagnosis assistance</td>
+                            <td>MARIA - Medical Research Agent</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Finance</strong></td>
+                            <td>Risk assessment, algorithmic trading</td>
+                            <td>Multi-Agent Financial Analysis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Legal</strong></td>
+                            <td>Document review, compliance monitoring</td>
+                            <td>Legal Document Review Agent</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Enterprise</strong></td>
+                            <td>Customer support, content creation</td>
+                            <td>Support Agents, Content Creation System</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>📚 Further Reading & Resources</h2>
+                    <h3>🔗 Key Papers & Frameworks</h3>
+                    <div style="font-size: 0.9rem; line-height: 1.6;">
+                        <h4>📖 Foundational Papers</h4>
+                        <ul>
+                            <li><strong>ReAct:</strong> Yao et al. "ReAct: Synergizing Reasoning and Acting in Language Models"</li>
+                            <li><strong>Multi-Agent Systems:</strong> Stone & Veloso "Multiagent Systems: A Survey from a Machine Learning Perspective"</li>
+                            <li><strong>Tool Learning:</strong> Qin et al. "Tool Learning with Foundation Models"</li>
+                        </ul>
+                        
+                        <h4>🛠️ Framework Documentation</h4>
+                        <ul>
+                            <li><strong>LangGraph:</strong> <code>langchain-ai.github.io/langgraph/</code></li>
+                            <li><strong>CrewAI:</strong> <code>docs.crewai.com/</code></li>
+                            <li><strong>AutoGen:</strong> <code>microsoft.github.io/autogen/</code></li>
+                            <li><strong>Our System:</strong> <code>github.com/[your-repo]/training-agentic-ai</code></li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Conclusion -->
+            <section>
+                <section class="title-slide">
+                    <h1>🎯 Conclusion</h1>
+                    <h2>From Theory to Production Reality</h2>
+                    <div style="margin-top: 2rem;">
+                        <h3>✅ What We've Demonstrated</h3>
+                        <ul style="text-align: left; display: inline-block;">
+                            <li><strong>Theoretical Grounding:</strong> Core agentic AI principles</li>
+                            <li><strong>Framework Mastery:</strong> Multi-framework polyglot approach</li>
+                            <li><strong>Production Scale:</strong> 16-agent enterprise ecosystem</li>
+                            <li><strong>Domain Expertise:</strong> Specialized agents across industries</li>
+                            <li><strong>Research Foundation:</strong> Platform for academic investigation</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>🚀 Thank You!</h2>
+                    <div class="success-box">
+                        <h3>🎯 Ready for Live Demo</h3>
+                        <p>Let's explore our 16-agent ecosystem in action!</p>
+                        <p><strong>Dashboard:</strong> <code>http://localhost:8000</code></p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <h3>❓ Questions & Discussion</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value">🤖</div>
+                                <div class="metric-label">Agentic AI</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">🏗️</div>
+                                <div class="metric-label">Architecture</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">🔬</div>
+                                <div class="metric-label">Research</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">🚀</div>
+                                <div class="metric-label">Production</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+            
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/search/search.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/zoom/zoom.js"></script>
+
+    <script>
+        // Initialize Reveal.js
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            
+            // Plugin configuration
+            plugins: [ 
+                RevealMarkdown, 
+                RevealHighlight, 
+                RevealNotes, 
+                RevealSearch, 
+                RevealZoom 
+            ],
+            
+            // Display configuration
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            keyboard: true,
+            overview: true,
+            
+            // Presentation size
+            width: 1200,
+            height: 900,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+
+        // Add keyboard shortcuts
+        Reveal.addKeyBinding({keyCode: 82, key: 'r', description: 'Reload presentation'}, () => {
+            location.reload();
+        });
+    </script>
+</body>
+</html>

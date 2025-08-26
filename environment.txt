@@ -1,0 +1,216 @@
+# Environment Configuration for Training Agentic AI System
+# Docker Deployment Requirements
+
+# ===========================
+# SYSTEM PACKAGES (apt-get)
+# ===========================
+
+# Core system dependencies
+build-essential
+python3-dev
+python3-pip
+python3-venv
+git
+curl
+wget
+unzip
+
+# OCR and Image Processing
+tesseract-ocr
+tesseract-ocr-eng  # English language support
+tesseract-ocr-ara  # Arabic language support
+tesseract-ocr-fra  # French language support (optional)
+tesseract-ocr-deu  # German language support (optional)
+tesseract-ocr-spa  # Spanish language support (optional)
+tesseract-ocr-chi-sim  # Simplified Chinese support (optional)
+tesseract-ocr-chi-tra  # Traditional Chinese support (optional)
+libtesseract-dev
+libleptonica-dev
+
+# Image processing libraries
+libopencv-dev
+python3-opencv
+libpoppler-cpp-dev
+poppler-utils
+libffi-dev
+libssl-dev
+
+# Database and storage
+sqlite3
+redis-server
+postgresql-client
+
+# Audio/Video processing (if needed)
+ffmpeg
+libsm6
+libxext6
+libxrender-dev
+libglib2.0-0
+
+# Graphics and fonts
+fonts-liberation
+fonts-dejavu-core
+fontconfig
+
+# ===========================
+# DOCKER ENVIRONMENT SETUP
+# ===========================
+
+# Base image recommendation: ubuntu:22.04 or python:3.11-slim
+# For Arabic support: Use ubuntu:22.04 for better language pack support
+
+# ===========================
+# TESSERACT LANGUAGE DATA
+# ===========================
+
+# Primary languages for OCR
+# These will be installed via apt-get packages above:
+# - eng (English) - Default
+# - ara (Arabic) - For Arabic script documents
+# - Additional languages as needed
+
+# Language data files location in container:
+# /usr/share/tesseract-ocr/5/tessdata/
+
+# ===========================
+# PYTHON ENVIRONMENT
+# ===========================
+
+# Python version: 3.11+ (3.13 not recommended for production due to PyTorch compatibility)
+# Virtual environment: /app/venv
+# Requirements: requirements.txt (already configured)
+
+# ===========================
+# DOCKER BUILD COMMANDS
+# ===========================
+
+# Example Dockerfile sections:
+
+# System packages installation:
+# RUN apt-get update && apt-get install -y \
+#     tesseract-ocr \
+#     tesseract-ocr-eng \
+#     tesseract-ocr-ara \
+#     libopencv-dev \
+#     poppler-utils \
+#     && rm -rf /var/lib/apt/lists/*
+
+# Verify Tesseract installation:
+# RUN tesseract --list-langs
+
+# ===========================
+# ENVIRONMENT VARIABLES
+# ===========================
+
+# Required environment variables for Docker:
+PYTHONPATH=/app
+TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata
+LANG=C.UTF-8
+LC_ALL=C.UTF-8
+
+# Application-specific variables:
+STREAMLIT_SERVER_PORT=8501
+REDIS_URL=redis://localhost:6379
+DATABASE_URL=sqlite:///app/data/agents.db
+
+# Model and API configurations (set in .env):
+# OPENAI_API_KEY=your_key_here
+# ANTHROPIC_API_KEY=your_key_here
+# GOOGLE_API_KEY=your_key_here
+# HUGGINGFACE_API_KEY=your_key_here
+# LANGFUSE_SECRET_KEY=your_key_here
+# LANGFUSE_PUBLIC_KEY=your_key_here
+
+# ===========================
+# VOLUME MOUNTS
+# ===========================
+
+# Recommended Docker volumes:
+# - /app/data (for databases and persistent storage)
+# - /app/uploads (for uploaded documents)
+# - /app/models (for cached ML models)
+# - /app/logs (for application logs)
+
+# ===========================
+# PORT CONFIGURATION
+# ===========================
+
+# Exposed ports for all agents:
+# 8501-8520 (Streamlit apps)
+# 6379 (Redis)
+# 5432 (PostgreSQL, if used)
+
+# Specific agent ports:
+# 8501 - Main Dashboard
+# 8502 - Customer Support Agent
+# 8503 - Legal Document Review
+# 8504 - Finance Advisor Agent
+# 8505 - Competitive Intel Agent
+# 8506 - Insights Explorer Agent
+# 8507 - Customer Support Triage
+# 8508 - Stock Analysis Extended
+# 8509 - Multi-Agent Financial Analysis
+# 8510 - AI Content Creation System
+# 8511 - Autogen Research Intelligence
+# 8512 - Medical Research Intelligence
+# 8513 - Resume Screening Agent
+# 8514 - Research Agent V2
+# 8516 - Handwriting Document Agent
+
+# ===========================
+# HEALTH CHECKS
+# ===========================
+
+# Health check endpoints:
+# HTTP GET /health on each agent port
+# Tesseract: tesseract --version
+# Python: python3 --version
+# Redis: redis-cli ping
+
+# ===========================
+# SECURITY CONSIDERATIONS
+# ===========================
+
+# - Run as non-root user
+# - Use multi-stage builds to minimize image size
+# - Set proper file permissions
+# - Use secrets management for API keys
+# - Enable HTTPS in production
+# - Implement rate limiting
+# - Use container scanning for vulnerabilities
+
+# ===========================
+# PERFORMANCE OPTIMIZATION
+# ===========================
+
+# - Use .dockerignore to exclude unnecessary files
+# - Cache pip dependencies in separate layer
+# - Use slim base images
+# - Enable GPU support for ML models (if available)
+# - Configure memory limits for containers
+# - Use horizontal scaling for high load
+
+# ===========================
+# MONITORING AND LOGGING
+# ===========================
+
+# - Use structured logging (JSON format)
+# - Implement metrics collection
+# - Set up log aggregation
+# - Monitor resource usage
+# - Use health checks and readiness probes
+# - Implement graceful shutdown handling
+
+# ===========================
+# BACKUP AND RECOVERY
+# ===========================
+
+# - Regular database backups
+# - Persistent volume snapshots
+# - Configuration backups
+# - Disaster recovery procedures
+# - Data retention policies
+
+# Last updated: 2025-08-20
+# Version: 1.0
+# Compatible with: Docker 20.10+, Kubernetes 1.20+

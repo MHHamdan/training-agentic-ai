@@ -1,0 +1,53 @@
+# Multi-Agent Financial Analysis System Requirements
+
+# Core LangGraph and LangChain
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+
+# LLM Providers
+langchain-anthropic>=0.2.0
+langchain-openai>=0.2.0
+langchain-google-genai>=2.0.0
+
+# Financial Data
+yfinance>=0.2.28
+alpha-vantage>=2.3.1
+finnhub-python>=2.4.0
+pandas-datareader>=0.10.0
+
+# Data Processing and Analysis
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Technical Analysis
+pandas-ta>=0.3.14b0
+ta-lib>=0.4.26
+
+# Web Interface
+streamlit>=1.32.0
+plotly>=5.17.0
+
+# News and Sentiment
+newsapi-python>=0.2.7
+textblob>=0.17.1
+vaderSentiment>=3.3.2
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+aiohttp>=3.9.0
+
+# Date/Time
+pytz>=2023.3
+
+# Validation
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Development Tools
+jupyter>=1.0.0
+pytest>=7.4.0

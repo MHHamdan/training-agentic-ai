@@ -1,0 +1,7 @@
+2025-08-10 20:01:13.704 "browser.showErrorDetails" is not a valid config option. If you previously had this config option set, it may have been removed.
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.2.16:8501
+

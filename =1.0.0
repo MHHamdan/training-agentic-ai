@@ -1,0 +1,22 @@
+Collecting PyMuPDF
+  Using cached pymupdf-1.26.3-cp39-abi3-macosx_10_9_x86_64.whl.metadata (3.4 kB)
+Collecting opencv-python
+  Using cached opencv_python-4.12.0.88-cp37-abi3-macosx_13_0_x86_64.whl.metadata (19 kB)
+Collecting asyncio-throttle
+  Using cached asyncio_throttle-1.0.2-py3-none-any.whl.metadata (3.4 kB)
+Collecting numpy<2.3.0,>=2 (from opencv-python)
+  Using cached numpy-2.2.6-cp313-cp313-macosx_14_0_x86_64.whl.metadata (62 kB)
+Downloading pymupdf-1.26.3-cp39-abi3-macosx_10_9_x86_64.whl (23.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 23.1/23.1 MB 6.5 MB/s  0:00:03
+Downloading opencv_python-4.12.0.88-cp37-abi3-macosx_13_0_x86_64.whl (57.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.3/57.3 MB 7.3 MB/s  0:00:07
+Downloading numpy-2.2.6-cp313-cp313-macosx_14_0_x86_64.whl (6.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.6/6.6 MB 5.7 MB/s  0:00:01
+Downloading asyncio_throttle-1.0.2-py3-none-any.whl (4.1 kB)
+Installing collected packages: PyMuPDF, numpy, asyncio-throttle, opencv-python
+  Attempting uninstall: numpy
+    Found existing installation: numpy 2.3.2
+    Uninstalling numpy-2.3.2:
+      Successfully uninstalled numpy-2.3.2
+
+Successfully installed PyMuPDF-1.26.3 asyncio-throttle-1.0.2 numpy-2.2.6 opencv-python-4.12.0.88

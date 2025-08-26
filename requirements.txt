@@ -12,10 +12,29 @@ pypdf2>=3.0.1
 faiss-cpu>=1.7.4
 python-dotenv>=1.0.0
 
+# Insights Explorer Agent requires 
+phidata
+pyreadline3
+sentence-transformers==2.2.2
+pinecone-client==3.2.2
+huggingface-hub>=0.4.0
+nltk
+scikit-learn>=1.0.0
+scipy
+sentencepiece
+# PyTorch for Hugging Face models (CPU version for compatibility)
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+# Note: PyTorch dependencies may need manual installation for Python 3.13
+
+
 # Additional utilities
 tiktoken>=0.5.2
 numpy>=1.26.0
 requests>=2.31.0
+langchain-openai>=0.1.0
+openai>=1.0.0
 
 # Customer Support Agent dependencies
 langgraph>=0.2.0
@@ -32,3 +51,151 @@ pytz>=2023.3
 
 # Ensure shared libs
 python-dotenv>=1.0.0
+
+# Competitive Intel Agent dependencies
+cohere>=5.0.0
+llama-index>=0.10.0
+llama-index-llms-cohere>=0.1.0
+llama-index-embeddings-cohere>=0.1.0
+pandas>=2.0.0
+
+# Customer Support Triage Agent dependencies
+# Uses shared dependencies: phidata, pinecone-client, openai, streamlit
+# Additional specific requirements (already included above):
+# - google-generativeai (for Gemini LLM)
+# - pandas (for CSV processing)
+# - PyPDF2 (for PDF processing)
+# - python-dotenv (for env variables)
+
+# Extended Stock Analysis Agent dependencies
+crewai>=0.1.0
+crewai-tools>=0.1.0
+yfinance>=0.2.28
+alpha-vantage>=2.3.1
+pandas-datareader>=0.10.0
+finnhub-python>=2.4.0
+polygon-api-client>=1.13.0
+pandas-ta>=0.3.14b0
+plotly>=5.17.0
+matplotlib>=3.7.0
+newsapi-python>=0.2.7
+tweepy>=4.14.0
+praw>=7.7.1
+textblob>=0.17.1
+vaderSentiment>=3.3.2
+transformers>=4.35.0
+beautifulsoup4>=4.12.0
+aiohttp>=3.8.0
+prometheus-client>=0.18.0
+structlog>=23.2.0
+pydantic-settings>=2.0.0
+schedule>=1.2.0
+retry>=0.9.2
+tenacity>=8.2.0
+duckduckgo-search>=3.9.0
+
+# Multi-Agent Financial Analysis System (LangGraph)
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-anthropic>=0.2.0
+
+# AI Content Creation System dependencies
+langgraph>=0.2.0
+langchain-openai>=0.1.0
+langchain-anthropic>=0.2.0
+langchain-google-genai>=0.0.6
+textstat>=0.7.3
+nltk>=3.8.1
+markdown>=3.5.0
+feedparser>=6.0.0
+python-docx>=1.0.0
+reportlab>=4.0.0
+markdown2>=2.5.0
+# Note: uuid and datetime are built-in Python modules
+
+# ARIA - Autogen Research Intelligence Agent dependencies
+pyautogen>=0.2.0
+google-generativeai>=0.8.0
+beautifulsoup4>=4.12.0
+fpdf2>=2.7.0
+pandas>=2.0.0
+
+# MARIA - Medical Research Intelligence Agent dependencies
+# AutoGen framework (shared with ARIA)
+# Medical research tools
+python-docx>=1.1.0
+xmltodict>=0.13.0
+biopython>=1.84
+# Note: Medical NLP models like BioBERT require additional setup
+# Clinical data processing
+openpyxl>=3.1.0
+
+# Resume Screening Agent (Agent 12) dependencies
+# Document processing
+PyPDF2>=3.0.1
+python-docx>=1.1.0
+pytesseract>=0.3.10
+pdf2image>=1.16.3
+Pillow>=10.0.0
+
+# LangSmith observability
+langsmith>=0.1.0
+
+# Vector storage
+chromadb>=0.4.22
+langchain-community>=0.3.0
+
+# Hugging Face integration
+huggingface-hub>=0.20.0
+aiohttp>=3.9.0
+
+# UI components
+plotly>=5.17.0
+streamlit-plotly-events>=0.0.6
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Additional utilities for resume processing
+python-magic>=0.4.27
+chardet>=5.2.0
+reportlab>=4.0.0
+
+# Cloud provider integrations (optional)
+anthropic>=0.3.0
+cohere>=4.0.0
+groq>=0.4.0
+
+# Research Agent V2 dependencies
+langfuse>=2.0.0
+pydantic-settings>=2.0.0
+duckduckgo-search>=4.0.0
+arxiv>=2.0.0
+wikipedia-api>=0.6.0
+newsapi-python>=0.2.7
+beautifulsoup4>=4.12.0
+aiohttp>=3.9.0
+textblob>=0.17.0
+vaderSentiment>=3.3.2
+bibtexparser>=1.4.0
+asyncio>=3.4.3
+aiofiles>=23.0.0
+loguru>=0.7.0
+cachetools>=5.3.0
+
+# Handwriting Document Agent (Agent 16) dependencies
+# Document processing and OCR
+PyMuPDF>=1.23.0
+opencv-python>=4.8.0
+asyncio-throttle>=1.0.0
+pytesseract>=0.3.10
+# Note: transformers already included above (line 82)
+# Note: sentence-transformers already included above (line 18)
+# Note: pdf2image already included above (line 136)
+# Note: chromadb already included above (line 143)
+# Note: langgraph already included above (line 94)
+# Note: langfuse already included above (line 169)
+# Note: Pillow already included above (line 137)

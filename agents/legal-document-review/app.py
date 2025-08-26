@@ -15,8 +15,12 @@ from langchain.schema import Document
 # PDF processing
 import PyPDF2
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from root directory
+from pathlib import Path
+current_dir = Path(__file__).parent
+root_dir = current_dir.parent.parent
+env_path = root_dir / '.env'
+load_dotenv(env_path)
 
 # Page configuration
 st.set_page_config(
@@ -60,7 +64,7 @@ class LegalDocumentProcessor:
         self.setup_models()
     
     def setup_models(self):
-        """Setup Gemini models for embeddings and generation"""
+        """Setup Google Gemini models for embeddings and generation"""
         try:
             self.embeddings = GoogleGenerativeAIEmbeddings(
                 model="models/embedding-001",
@@ -74,7 +78,11 @@ class LegalDocumentProcessor:
                 max_output_tokens=2048
             )
         except Exception as e:
-            st.error(f"Error setting up models: {str(e)}")
+            error_msg = str(e)
+            if "API_KEY_INVALID" in error_msg or "expired" in error_msg.lower():
+                st.error("🔑 **API Key Issue**: Your Google API key may be invalid. Please check your configuration.")
+            else:
+                st.error(f"Error setting up models: {error_msg}")
     
     def extract_pdf_text(self, pdf_file) -> str:
         """Extract text from uploaded PDF file"""
@@ -226,22 +234,19 @@ def main():
     with st.sidebar:
         st.header("🔧 Configuration")
         
-        # Try to get API key from environment first
-        default_api_key = os.getenv("GOOGLE_API_KEY", "")
-        
-        # API Key input
-        api_key = st.text_input(
-            "Enter Google Gemini API Key",
-            type="password",
-            value=default_api_key,
-            placeholder="AIza...",
-            help="Get your API key from Google AI Studio or set in .env file"
-        )
+        # Get Google API key from environment (using working Google API key)
+        api_key = os.getenv("GOOGLE_API_KEY", "")
         
         if api_key:
-            st.success("✅ API Key configured")
+            st.success("✅ Google API Key found in .env file")
+            # Show masked version of the key for confirmation
+            masked_key = api_key[:8] + "*" * (len(api_key) - 12) + api_key[-4:]
+            st.info(f"Using Google key: {masked_key}")
         else:
-            st.warning("⚠️ Please enter your API key to continue")
+            st.error("⚠️ GOOGLE_API_KEY not found in .env file")
+            st.markdown("Please check that your .env file contains:")
+            st.code("GOOGLE_API_KEY=your_api_key_here")
+            st.markdown("[Get Google API Key →](https://aistudio.google.com/app/apikey)")
         
         st.divider()
         

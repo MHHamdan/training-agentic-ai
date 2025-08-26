@@ -1,12 +1,13 @@
 version: "3.9"
 
 services:
-  # Main orchestrator - landing page
-  orchestrator:
+  # Main Dashboard - Orchestrator
+  main-dashboard:
     build:
       context: .
-      dockerfile: Dockerfile.orchestrator
-    image: training-agentic-ai/orchestrator:latest
+      dockerfile: Dockerfile
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-dashboard
     env_file:
       - ./.env
     ports:
@@ -14,18 +15,19 @@ services:
     environment:
       - STREAMLIT_SERVER_PORT=8500
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
-    depends_on:
-      - customer-support-agent
-      - legal-document-review
+      - SERVICE_NAME=main-dashboard
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
     networks:
       - agent-network
+    restart: unless-stopped
+    command: streamlit run app.py --server.port=8500 --server.address=0.0.0.0
 
   # Legal Document Review Agent
   legal-document-review:
-    build:
-      context: .
-      dockerfile: agents/legal-document-review/Dockerfile
-    image: training-agentic-ai/legal-document-review:latest
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-legal
     env_file:
       - ./.env
     ports:
@@ -33,29 +35,198 @@ services:
     environment:
       - STREAMLIT_SERVER_PORT=8501
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=legal-document-review
     volumes:
-      - ./agents/legal-document-review/sample_documents:/app/sample_documents
+      - ./agents/legal-document-review/sample_documents:/app/agents/legal-document-review/sample_documents
+      - ./data:/app/data
+      - ./logs:/app/logs
     networks:
       - agent-network
+    restart: unless-stopped
+    command: streamlit run agents/legal-document-review/app.py --server.port=8501 --server.address=0.0.0.0
 
   # Customer Support Agent
   customer-support-agent:
-    build:
-      context: .
-      dockerfile: agents/customer-support-agent/Dockerfile
-    image: training-agentic-ai/customer-support-agent:latest
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-support
     env_file:
       - ./.env
     ports:
       - "8502:8502"
     environment:
-      - PYTHONPATH=/app/src
+      - PYTHONPATH=/app/agents/customer-support-agent/src
       - STREAMLIT_SERVER_PORT=8502
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=customer-support
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
     networks:
       - agent-network
+    restart: unless-stopped
+    command: streamlit run agents/customer-support-agent/src/ui/app.py --server.port=8502 --server.address=0.0.0.0
+
+  # Finance Advisor Agent
+  finance-advisor-agent:
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-finance
+    env_file:
+      - ./.env
+    ports:
+      - "8503:8503"
+    environment:
+      - STREAMLIT_SERVER_PORT=8503
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=finance-advisor
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - agent-network
+    restart: unless-stopped
+    command: streamlit run agents/Finance-Advaisor-Agent/app.py --server.port=8503 --server.address=0.0.0.0
+
+  # Competitive Intel Agent
+  competitive-intel-agent:
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-intel
+    env_file:
+      - ./.env
+    ports:
+      - "8504:8504"
+    environment:
+      - STREAMLIT_SERVER_PORT=8504
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=competitive-intel
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - agent-network
+    restart: unless-stopped
+    command: streamlit run agents/competitive-intel-agent/app.py --server.port=8504 --server.address=0.0.0.0
+
+  # Insights Explorer Agent
+  insights-explorer-agent:
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-insights
+    env_file:
+      - ./.env
+    ports:
+      - "8505:8505"
+    environment:
+      - STREAMLIT_SERVER_PORT=8505
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=insights-explorer
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - agent-network
+    restart: unless-stopped
+    command: streamlit run agents/insights-explorer-agent/app.py --server.port=8505 --server.address=0.0.0.0
+
+  # Customer Support Triage Agent
+  support-triage-agent:
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-triage
+    env_file:
+      - ./.env
+    ports:
+      - "8506:8506"
+    environment:
+      - STREAMLIT_SERVER_PORT=8506
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=support-triage
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - agent-network
+    restart: unless-stopped
+    command: streamlit run agents/Customer-Support-Triage/app.py --server.port=8506 --server.address=0.0.0.0
+
+  # Extended Stock Analysis Agent
+  stock-analysis-extended:
+    image: 440930/training-agentic-ai:latest
+    container_name: training-agentic-ai-stock
+    env_file:
+      - ./.env
+    ports:
+      - "8507:8507"
+    environment:
+      - PYTHONPATH=/app/agents/stock-analysis-extended
+      - STREAMLIT_SERVER_PORT=8507
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=stock-analysis-extended
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./agents/stock-analysis-extended/data:/app/agents/stock-analysis-extended/data
+      - ./agents/stock-analysis-extended/reports:/app/agents/stock-analysis-extended/reports
+    networks:
+      - agent-network
+    restart: unless-stopped
+    depends_on:
+      - redis
+    command: streamlit run agents/stock-analysis-extended/app.py --server.port=8507 --server.address=0.0.0.0
+
+  # Handwriting & Historical Document Analysis Agent
+  handwriting-document-agent:
+    build:
+      context: ./agents/handwriting-document-agent
+      dockerfile: Dockerfile
+    image: 440930/handwriting-document-agent:latest
+    container_name: training-agentic-ai-handwriting
+    env_file:
+      - ./.env
+    ports:
+      - "8516:8516"
+    environment:
+      - PYTHONPATH=/app
+      - STREAMLIT_SERVER_PORT=8516
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - SERVICE_NAME=handwriting-document-agent
+      - TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - PYTHONIOENCODING=utf-8
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./agents/handwriting-document-agent/data:/app/data/uploads
+      - ./agents/handwriting-document-agent/chroma_db:/app/data/chroma_db
+      - ./agents/handwriting-document-agent/models:/app/data/models
+    networks:
+      - agent-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8516/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    command: ["python", "-m", "streamlit", "run", "app.py", "--server.port=8516", "--server.address=0.0.0.0", "--server.headless=true"]
+
+  # Redis Cache (for inter-agent communication)
+  redis:
+    image: redis:7-alpine
+    container_name: training-agentic-ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - agent-network
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-mypassword}
 
 networks:
   agent-network:
     driver: bridge
+    name: training-agentic-ai-network
+
+volumes:
+  redis-data:
+    name: training-agentic-ai-redis-data
 

@@ -1,0 +1,37 @@
+# Core dependencies
+streamlit>=1.28.0
+asyncio-throttle>=1.0.0
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Document processing
+Pillow>=10.0.0
+pdf2image>=1.17.0
+PyMuPDF>=1.23.0
+pytesseract>=0.3.10
+opencv-python>=4.8.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# AI/ML models (simplified for compatibility)
+transformers>=4.35.0
+sentence-transformers>=2.2.2
+huggingface-hub>=0.19.0
+
+# Vector database
+chromadb>=0.4.0
+
+# LangGraph and observability
+langgraph>=0.0.40
+langfuse>=2.7.0
+
+# Data processing
+pandas>=2.1.0
+plotly>=5.17.0
+
+# Async support
+aiohttp>=3.9.0
+
+# Utilities
+typing-extensions>=4.8.0

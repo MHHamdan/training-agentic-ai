@@ -1,0 +1,86 @@
+# Stock Analysis Agent Requirements
+
+# Core ML and AI
+transformers>=4.35.0
+torch>=2.0.0
+huggingface_hub>=0.17.0
+sentence-transformers>=2.2.2
+
+# CrewAI and Agent Framework
+crewai>=0.28.0
+crewai-tools>=0.1.6
+langchain>=0.1.0
+langchain-community>=0.0.20
+langchain-huggingface>=0.0.1
+
+# AgentOps Integration
+agentops>=0.2.0
+
+# Financial Data and APIs
+yfinance>=0.2.18
+alpha_vantage>=2.3.1
+pandas>=2.0.0
+numpy>=1.24.0
+requests>=2.31.0
+aiohttp>=3.8.0
+
+# Web Framework
+streamlit>=1.28.0
+plotly>=5.17.0
+
+# Data Processing and Storage
+pandas>=2.0.0
+numpy>=1.24.0
+sqlite3  # Built-in Python module
+redis>=4.5.0  # Optional for caching
+
+# Async and Concurrent Processing
+asyncio  # Built-in Python module
+concurrent.futures  # Built-in Python module
+
+# Security and Compliance
+cryptography>=41.0.0
+hashlib  # Built-in Python module
+uuid  # Built-in Python module
+
+# Logging and Monitoring
+python-json-logger>=2.0.0
+structlog>=23.1.0
+
+# Configuration Management
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+
+# Testing (Development)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+
+# Development Tools
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+
+# Optional Dependencies
+# Uncomment based on specific needs
+
+# For advanced NLP
+# spacy>=3.6.0
+# nltk>=3.8.0
+
+# For additional financial data sources
+# quandl>=3.7.0
+# bloomberg-api>=0.1.0  # Requires Bloomberg terminal
+
+# For enhanced visualization
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
+
+# For database integration
+# sqlalchemy>=2.0.0
+# psycopg2-binary>=2.9.0  # For PostgreSQL
+
+# For advanced time series analysis
+# statsmodels>=0.14.0
+# scipy>=1.11.0

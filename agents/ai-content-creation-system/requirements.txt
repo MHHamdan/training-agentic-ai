@@ -1,0 +1,43 @@
+# AI Content Creation System Requirements
+# Core Framework Dependencies
+streamlit>=1.32.0
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-openai>=0.1.0
+langchain-anthropic>=0.2.0
+langchain-google-genai>=0.0.6
+langchain-community>=0.3.0
+
+# Data Processing and Analysis
+pandas>=2.0.0
+numpy>=1.26.0
+pydantic>=2.7.0
+
+# HTTP and API
+requests>=2.31.0
+urllib3>=2.0.0
+
+# Text Processing and Analysis
+textstat>=0.7.3
+nltk>=3.8.1
+feedparser>=6.0.0
+beautifulsoup4>=4.12.0
+
+# Utility Libraries
+python-dotenv>=1.0.0
+# Note: uuid and datetime are built-in Python modules
+
+# Optional: Additional Content Tools
+markdown>=3.5.0
+PyPDF2>=3.0.0
+python-docx>=0.8.11
+
+# Development and Testing
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Optional: Advanced NLP (uncomment if needed)
+# transformers>=4.36.0
+# torch>=2.1.0
+# sentence-transformers>=2.2.0

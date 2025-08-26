@@ -20,3 +20,6 @@ venv/
 .idea/
 .vscode/
 
+# Claude AI
+.claude/
+

@@ -1,0 +1,142 @@
+# Handwriting Document Agent - Docker Ignore File
+
+# Python cache and temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Operating system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Documentation and markdown files (optional)
+*.md
+docs/
+README.md
+
+# Test files
+tests/
+test_*.py
+*_test.py
+pytest.ini
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# Model cache and temporary data
+models/
+*.pkl
+*.joblib
+*.model
+*.bin
+*.safetensors
+
+# Chroma database (will be persistent volume)
+chroma_db/
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+
+# Temporary uploads and processing
+uploads/
+temp/
+tmp/
+data/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Lock files
+poetry.lock
+Pipfile.lock
+
+# Node.js (if any frontend components)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Large files that shouldn't be in containers
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Development and debug files
+debug/
+scratch/
+playground/
+experiments/
+
+# Security files
+*.pem
+*.key
+*.crt
+*.cert
+secrets/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Cache directories
+.cache/
+.mypy_cache/
+.pylint.d/
+
+# Streamlit cache
+.streamlit/
