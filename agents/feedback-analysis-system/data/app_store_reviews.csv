@@ -1,0 +1,21 @@
+review_id,platform,rating,review_text,user_name,date,app_version
+R001,Google Play,1,"App crashes when I try to upload photos. This has been happening since the last update. Please fix ASAP!",JohnDoe123,2024-01-15,3.0.1
+R002,App Store,5,"Amazing app! Love the new features and the UI is so intuitive. Works perfectly on my iPhone 14.",HappyUser99,2024-01-15,3.0.1
+R003,Google Play,2,"Can't login since update. Keep getting error message 'Authentication failed'. My password is correct!",FrustratedUser,2024-01-14,3.0.1
+R004,App Store,4,"Would love to see dark mode added. Otherwise great app for productivity!",TechEnthusiast,2024-01-14,2.1.3
+R005,Google Play,1,"Data sync not working between devices. Lost important notes. Very disappointed.",DataLossVictim,2024-01-13,3.0.1
+R006,App Store,3,"Please add widget support for iOS. Would make the app much more useful.",FeatureRequester,2024-01-13,2.1.3
+R007,Google Play,1,"App is too slow and crashes frequently. Using Samsung S22.",AndroidUser456,2024-01-12,3.0.1
+R008,App Store,5,"Works perfectly! Best productivity app I've ever used. Worth every penny.",PremiumUser,2024-01-12,2.1.3
+R009,Google Play,2,"Too expensive for what it offers. The free version is too limited.",BudgetConscious,2024-01-11,2.1.3
+R010,App Store,1,"Poor customer service. Sent email 3 days ago, no response yet.",UnhappyCustomer,2024-01-11,2.1.3
+R011,Google Play,4,"Missing functionality for batch processing. Would be 5 stars if added.",PowerUser2024,2024-01-10,2.1.3
+R012,App Store,1,"SCAM!!! DON'T DOWNLOAD!!! CHECK OUT MY PROFILE FOR BETTER APPS!!!",SpamBot123,2024-01-10,2.1.3
+R013,Google Play,3,"App works but needs offline mode. Internet not always available.",OfflineUser,2024-01-09,2.1.3
+R014,App Store,2,"Battery drain is horrible. My phone dies in 3 hours with this app running.",BatteryDrainer,2024-01-09,3.0.1
+R015,Google Play,5,"The recent update fixed all my issues. Thank you developers!",GratefulUser,2024-01-08,3.0.1
+R016,App Store,4,"Great app but please add CSV export feature for reports.",BusinessUser,2024-01-08,2.1.3
+R017,Google Play,1,"qwerty123456 asdfgh zxcvbn",RandomSpam,2024-01-07,2.1.3
+R018,App Store,3,"Decent app but competitors have better features for same price.",Comparative,2024-01-07,2.1.3
+R019,Google Play,2,"Notifications don't work properly on Android 13. Please fix.",NotificationBug,2024-01-06,3.0.1
+R020,App Store,4,"Would be perfect with Apple Watch support. Please consider adding!",WatchUser,2024-01-06,2.1.3

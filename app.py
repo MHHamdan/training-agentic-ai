@@ -377,6 +377,15 @@ AGENTS_CONFIG = {
         "features": ["Langfuse Observability", "LangGraph Multi-Agent", "Hugging Face Models", "Academic Citations", "Fact Checking", "Real-time Monitoring", "Model Comparison", "Research Quality Evaluation"],
         "tech_stack": "LangGraph, Langfuse, Hugging Face, OpenAI, Anthropic, DuckDuckGo, ArXiv, Streamlit",
         "path": "agents/research-agent/app.py"
+    },
+    "feedback-analysis-system": {
+        "name": "Feedback Analysis System",
+        "icon": "🎯",
+        "port": 8515,
+        "description": "Intelligent multi-agent system for analyzing customer feedback from app stores and support emails with automated ticket generation",
+        "features": ["Multi-Agent Processing", "NLP Classification", "Bug Analysis", "Feature Extraction", "Ticket Generation", "Quality Assurance"],
+        "tech_stack": "CrewAI, LangChain, OpenAI/Ollama, Streamlit",
+        "path": "agents/feedback-analysis-system/app.py"
     }
 }
 
