@@ -594,4 +594,3 @@ cp .env.example .env && \
 echo "Add your API keys to .env file, then run: ./start_all_agents.sh"
 ```
 
-**🎯 Built for Production • 🔧 Ready for Scale • 🤖 Powered by AI**
